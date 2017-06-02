@@ -97,4 +97,54 @@ WorkflowService.prototype.expectElementDetails = function(promise, expected, exp
   });
 };
 
+WorkflowService.prototype.addStep = function(workflow, step) {
+  this.open(workflow).then(function() {
+    return swp.locators.stepForm.self.isPresent();
+  }).then(function(result) {
+    utils.expectResultIsTrue(result);
+  }).then(function() {
+    utils.sendKeysPromise(swp.locators.stepForm.fields, step);
+  }).then(function() {
+    swp.locators.stepForm.buttons.add.click();
+  });
+};
+
+WorkflowService.prototype.updateStep = function(workflow, toUpdate, updatee) {
+  this.open(workflow).then(function() {
+    return swp.commands.getStepsDetails();
+  }).then(function(result) {
+    return result.findIndex(function(step) {
+      return _.endsWith(step.h2, toUpdate.name);
+    });
+  }).then(function(idx) {
+    return swp.locators.workflowSteps.get(idx);
+  }).then(function(el) {
+    el.element(by.css('md-card-actions>a[aria-label="Edit Step"]')).click();
+  }).then(function() { // dont forget to clear all fields here
+    return utils.returnAllPromises(swp.locators.stepForm.fields, x => x.clear());
+  }).then(function(results) {
+    utils.expectEachResultsIsNull(results);
+  }).then(function() {
+    utils.sendKeysPromise(swp.locators.stepForm.fields, updatee);
+  }).then(function() {
+    swp.locators.stepForm.buttons.update.click();
+  });
+};
+
+WorkflowService.prototype.removeStep = function(workflow, toDelete) {
+  this.open(workflow).then(function() {
+    return swp.commands.getStepsDetails();
+  }).then(function(result) {
+    return result.findIndex(function(step) {
+      return _.endsWith(step.h2, toDelete.name);
+    });
+  }).then(function(idx) {
+    return swp.locators.workflowSteps.get(idx);
+  }).then(function(el) {
+    el.element(by.css('md-card-actions>button[aria-label="Delete Step"')).click();
+  }).then(function() {
+    utils.pressButton(mwp.locators.proceedButton);
+  });
+};
+
 module.exports = WorkflowService;

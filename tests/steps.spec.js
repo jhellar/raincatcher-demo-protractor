@@ -18,7 +18,7 @@ var constants = require('../utils/constants');
 var AuthService = require('../utils/auth.so');
 var authService = new AuthService();
 
-describe('Workflow E2E', function() {
+describe.skip('Steps E2E', function() {
 
   before('login', function() {
     authService.openPortal();
@@ -39,6 +39,53 @@ describe('Workflow E2E', function() {
   });
 
   describe('CREATE', function() {
+    //////////////
+    it('add ' + data.params.WORKFLOW_TCREATE + ' workflow steps', function() {
+      // browser.pause();
+      workflowService.addStep(data.workflows.CREATE, {
+        // formId: 'Create Form ID',
+        code: 'stp-crudl-create',
+        name: 'stp-crudl-create',
+        form: 'Create Form',
+        view: 'Create View'
+      });
+    });
+    it('add ' + data.params.WORKFLOW_TCREATE + ' workflow steps', function() {
+      // browser.pause();
+      workflowService.addStep(data.workflows.CREATE, {
+        // formId: 'Create Form ID',
+        code: 'stp-crudl-create',
+        name: 'stp-crudl-create',
+        form: 'Create Form',
+        view: 'Create View'
+      });
+    });
+    it('update ' + data.params.WORKFLOW_TCREATE + ' workflow steps', function() {
+      workflowService.updateStep(data.workflows.CREATE, {
+        // formId: 'Create Form ID',
+        code: 'stp-crudl-create',
+        name: 'stp-crudl-create',
+        form: 'Create Form',
+        view: 'Create View'
+      }, {
+        // formId: 'Create Form ID',
+        code: 'stp-crudl-create2',
+        name: 'stp-crudl-create2',
+        form: 'Create Form2',
+        view: 'Create View2'
+      });
+      // browser.pause();
+    });
+    it('delete ' + data.params.WORKFLOW_TCREATE + ' workflow steps', function() {
+      workflowService.removeStep(data.workflows.CREATE, {
+        code: 'stp-crudl-create2',
+        name: 'stp-crudl-create2',
+        form: 'Create Form2',
+        view: 'Create View2'
+      });
+      // browser.pause();
+    });
+    //////////////
     it('open ' + data.params.WORKFLOW_TCRUDL + ' workflow', function() {
       workflowService.open(data.workflows.WORKFLOW);
     });

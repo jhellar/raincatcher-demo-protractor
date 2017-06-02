@@ -26,7 +26,6 @@ describe('Workflow E2E', function() {
   });
 
   describe('CREATE', function() {
-
     it('create an empty{} workflow', function() {
       workflowService.create({}, true);
     });
@@ -50,7 +49,7 @@ describe('Workflow E2E', function() {
     });
   });
 
-  describe.skip('UPDATE', function() { // RAINCATCH-839
+  describe('UPDATE', function() { // RAINCATCH-839
     it('create ' + data.params.WORKFLOW_TUPDATE1 + ' workflow', function() {
       workflowService.create(data.workflows.UPDATE1);
     });

@@ -13,11 +13,8 @@ module.exports = function(grunt) {
     },
     protractor: {
       options: {
-        configFile: 'conf.local.js',
-        keepAlive: false, // Stops Grunt process if a test fails
-        noColor: true, // Do you want the output to use fun colors?
-        //debug: true, // Protractor command line debugging tool
-        args: {} // Additional arguments that are passed to the webdriver command
+        noColor: false, // Do you want the output to use fun colors?
+        //debug: true,
       },
       local: {
         configFile: 'conf.local.js',
@@ -28,12 +25,15 @@ module.exports = function(grunt) {
       },
       ci: {
         configFile: 'conf.ci.js',
-        keepAlive: true,
+        keepAlive: false,
         args: {}
       },
     },
     shell: {
-      wdmupdate: {
+      npm: {
+        command: 'npm install'
+      },
+      wdmu: {
         command: 'webdriver-manager update',
         options: {
           execOptions: {

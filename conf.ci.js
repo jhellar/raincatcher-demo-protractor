@@ -1,19 +1,15 @@
 var env = require('./environment.js');
-// Default local ports for Demo Apps
-var portalAppDefaultPort = 9003;
-var cloudAppDefaultPort = 8001;
-
 exports.config = {
+  seleniumAddress: env.seleniumAddress,
   allScriptsTimeout: env.allScriptsTimeout,
+
   baseUrl: // main URL for your Portal application under test
-  'http://' + (process.env.PORTAL_URL || 'localhost') +
-  ':' + (process.env.PORTAL_PORT || portalAppDefaultPort) +
-  '/?url=http://' + (process.env.CLOUD_URL || 'localhost') +
-  ':' + (process.env.CLOUD_PORT || cloudAppDefaultPort),
+  'https://' + process.env.PORTAL_URL + '/?url=https://' + process.env.CLOUD_URL,
 
   capabilities: env.capabilities,
 
   framework: 'mocha',
+
   // spec patterns are relative to this directory.
   specs: [
     'tests/*.spec.js'
@@ -24,8 +20,8 @@ exports.config = {
     reporter: 'spec',
     slow: env.slowThreshold,
     timeout: env.mochaTimeout,
-    bail: true,
-    watch: true
+    bail: false,
+    watch: false
   },
 
   onPrepare: function setup() {
@@ -38,8 +34,10 @@ exports.config = {
       };
     }).then(function(result) {
       console.log('Browser Max Window Size', result);
+      browser.driver.manage().timeouts().pageLoadTimeout(env.defaultPageLoadTimeout);
+      browser.driver.manage().timeouts().implicitlyWait(env.defaultImplicitWait);
       // browser.driver.manage().window().maximize();
-      browser.driver.manage().window().setSize(result.width, result.height);
+      // browser.driver.manage().window().setSize(result.width, result.height);
     }).then(function() { // setup expect as global
       var chai = require('chai');
       var chaiAsPromised = require('chai-as-promised');

@@ -4,7 +4,8 @@ var sampleImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/g
 module.exports.create = function() {
   var options = {
     method: 'POST',
-    url: 'http://localhost:8001/file/wfm/owner/rkX1fdSH/upload/base64/photo.png',
+    //url: 'http://localhost:8001/file/wfm/owner/rkX1fdSH/upload/base64/photo.png', // TODO change this
+    url: 'https://' + process.env.CLOUD_URL + '/file/wfm/owner/rkX1fdSH/upload/base64/photo.png',
     data: sampleImg
   };
 

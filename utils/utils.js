@@ -271,6 +271,25 @@ var inherit = function(child, base, properties) {
   }, properties));
 };
 
+var sendKeysPromise = function(elements, params) {
+  var sendKeys = function(kvPair) {
+    var element = kvPair.element;
+    return element.sendKeys(kvPair.value);
+  };
+  var kvPairs = _.map(elements, function(element, key) {
+    return {
+      element: element, value: params[key]};
+  });
+
+  var promise = _.reduce(_.tail(kvPairs), function(prev, kvPair) {
+    return prev.then(function() {
+      return sendKeys(kvPair);
+    });
+  }, sendKeys(_.head(kvPairs)));
+
+  return promise;
+};
+
 module.exports = {
   checkValuesAreCorrect,
   checkListSize,
@@ -307,5 +326,6 @@ module.exports = {
 
   pressButton,
 
-  inherit
+  inherit,
+  sendKeysPromise
 };

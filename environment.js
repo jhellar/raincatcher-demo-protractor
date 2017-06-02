@@ -1,7 +1,3 @@
-// Common configuration files with defaults plus overrides from environment vars
-var portalAppDefaultPort = 9003;
-var cloudAppDefaultPort = 8001;
-
 module.exports = {
   // The address of a running selenium server.
   seleniumAddress:
@@ -39,18 +35,7 @@ module.exports = {
       ],
     }
   },
-  // Default http port to host the web server
-  portalAppDefaultPort: portalAppDefaultPort,
 
   // Protractor interactive tests
-  interactiveTestPort: 6969,
-
-  // A base URL for your application under test.
-  baseUrl:
-  'http://' + (process.env.HTTP_HOST || 'localhost') +
-  ':' + (process.env.HTTP_PORT || portalAppDefaultPort) +
-  '/?url=http://' + (process.env.CLOUD_HTTP || 'localhost') +
-  ':' + (process.env.CLOUD_PORT || cloudAppDefaultPort)
-
-  // baseUrl: process.env.HTTP_HOST,
+  interactiveTestPort: 6969
 };
