@@ -25,7 +25,8 @@ exports.config = {
     slow: env.slowThreshold,
     timeout: env.mochaTimeout,
     bail: true,
-    watch: true
+    watch: true,
+    require: require('mocha-steps')
   },
 
   onPrepare: function setup() {

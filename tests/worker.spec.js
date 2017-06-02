@@ -20,7 +20,7 @@ describe('Worker E2E', function() {
   });
 
   describe('SETUP', function() {
-    it('create workers', function() {
+    step('create workers', function() {
       workerService.create(data.workers.UPDATE1);
       workerService.create(data.workers.DELETE);
       workerService.create(data.workers.CANCEL);
@@ -30,27 +30,27 @@ describe('Worker E2E', function() {
 
   describe('CREATE', function() {
 
-    it('create an empty{} worker', function() {
+    step('create an empty{} worker', function() {
       workerService.create({}, true);
     });
-    it('required field warinigs shown', function() {
+    step('required field warinigs shown', function() {
       workerService.expectWarningsPresent();
     });
-    it('create new ' + data.params.WORKER_TCREATE + ' worker', function() {
+    step('create new ' + data.params.WORKER_TCREATE + ' worker', function() {
       workerService.create(data.workers.CREATE);
     });
-    it('check ' + data.params.WORKER_TCREATE + ' worker details', function() {
+    step('check ' + data.params.WORKER_TCREATE + ' worker details', function() {
       workerService.expectDetailsToBe(data.workers.CREATE);
     });
-    it('RAINCATCH-747: open schedule page', function() {
+    step('RAINCATCH-747: open schedule page', function() {
       scp.commands.sideClick();
       scp.commands.selfCheck();
     });
-    it('RAINCATCH-747: open workers page', function() {
+    step('RAINCATCH-747: open workers page', function() {
       mwp.commands.sideClick();
       mwp.commands.selfCheck();
     });
-    it('check ' + data.params.WORKER_TCREATE + ' worker in list', function() {
+    step('check ' + data.params.WORKER_TCREATE + ' worker in list', function() {
       workerService.expectToBeInList(data.workers.CREATE);
     });
     xit('mobile App login as test worker', function() {
@@ -59,24 +59,24 @@ describe('Worker E2E', function() {
   });
 
   describe('UPDATE', function() {
-    it('update ' + data.params.WORKER_TUPDATE1 + ' worker details', function() {
+    step('update ' + data.params.WORKER_TUPDATE1 + ' worker details', function() {
       workerService.update(data.workers.UPDATE1, data.workers.UPDATE2);
     });
-    it('check ' + data.params.WORKER_TUPDATE2 + ' worker details', function() {
+    step('check ' + data.params.WORKER_TUPDATE2 + ' worker details', function() {
       workerService.expectDetailsToBe(data.workers.UPDATE2);
     });
-    it('RAINCATCH-747: open schedule page', function() {
+    step('RAINCATCH-747: open schedule page', function() {
       scp.commands.sideClick();
       scp.commands.selfCheck();
     });
-    it('RAINCATCH-747: open workers page', function() {
+    step('RAINCATCH-747: open workers page', function() {
       mwp.commands.sideClick();
       mwp.commands.selfCheck();
     });
-    it('check ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
+    step('check ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
       workerService.expectToBeInList(data.workers.UPDATE2);
     });
-    it('check ' + data.params.WORKER_TUPDATE1 + ' worker not in list', function() {
+    step('check ' + data.params.WORKER_TUPDATE1 + ' worker not in list', function() {
       workerService.expectNotInTheList(data.workers.UPDATE1);
     });
     xit('mobile App login with new worker', function() {
@@ -85,16 +85,16 @@ describe('Worker E2E', function() {
   });
 
   describe('CANCEL', function() {
-    it('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+    step('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
       workerService.open(data.workers.CANCEL);
     });
-    it('press [delete] button', function() {
+    step('press [delete] button', function() {
       workerService.pressDeleteButton();
     });
-    it('press [cancel] button', function() {
+    step('press [cancel] button', function() {
       workerService.pressCancelButton();
     });
-    it('check ' + data.params.WORKER_TCANCEL + ' worker in list', function() {
+    step('check ' + data.params.WORKER_TCANCEL + ' worker in list', function() {
       workerService.expectToBeInList(data.workers.CANCEL);
     });
     xit('RAINCATCH-750: press [new] button', function() {
@@ -103,10 +103,10 @@ describe('Worker E2E', function() {
     xit('RAINCATCH-750: press [cancel] button', function() {
       workerService.pressNewCancelButton();
     });
-    it('check [new] button visible', function() {
+    step('check [new] button visible', function() {
       workerService.expectNewButtonIsPresent();
     });
-    it('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+    step('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
       workerService.open(data.workers.CANCEL);
     });
     xit('RAINCATCH-750: press [edit] button', function() {
@@ -115,33 +115,33 @@ describe('Worker E2E', function() {
     xit('RAINCATCH-750: press [cancel] button', function() {
       workerService.pressNewCancelButton();
     });
-    it('check ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+    step('check ' + data.params.WORKER_TCANCEL + ' worker details', function() {
       workerService.expectDetailsToBe(data.workers.CANCEL);
     });
   });
 
   describe('SEARCH', function() {
     var searched;
-    it('RAINCATCH-747: search field is visible and ' + data.params.WORKER_TSEARCH + 'is searched', function() {
+    step('RAINCATCH-747: search field is visible and ' + data.params.WORKER_TSEARCH + 'is searched', function() {
       searched = workerService.search(data.workers.SEARCH); // RAINCATCH-747 search input is not reloading
       // other search mechanism is implemented for this test
     });
-    it('check ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
+    step('check ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
       workerService.expectElementDetailsEqualTo(searched, data.workers.SEARCH);
     });
-    it('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
+    step('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
       workerService.expectElementDetailsNotEqualTo(searched, data.workers.DELETE);
     });
-    it('search reset to list all workers', function() {
+    step('search reset to list all workers', function() {
       workerService.searchReset();
     });
   });
 
   describe('DELETE', function() {
-    it('remove ' + data.params.WORKER_TDELETE + ' worker', function() {
+    step('remove ' + data.params.WORKER_TDELETE + ' worker', function() {
       workerService.remove(data.workers.DELETE);
     });
-    it('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
+    step('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
       workerService.expectNotInTheList(data.workers.DELETE);
     });
     xit('mobile App login as test worker', function() {
@@ -150,7 +150,7 @@ describe('Worker E2E', function() {
   });
 
   describe('CLEANUP', function() {
-    it('remove workers', function() {
+    step('remove workers', function() {
       workerService.remove(data.workers.CREATE);
       workerService.remove(data.workers.UPDATE2);
       workerService.remove(data.workers.CANCEL);

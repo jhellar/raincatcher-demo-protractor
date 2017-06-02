@@ -37,6 +37,7 @@
     "$fh": false,
     "localStorage": false,
     "window": false,
-    "expect": false
+    "expect": false,
+    "step": false
   }
 }
