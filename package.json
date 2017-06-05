@@ -28,6 +28,7 @@
     "eslint": "^3.16.1",
     "lodash": "^4.17.4",
     "mocha": "^2.5.3",
+    "mocha-jenkins-reporter": "^0.3.8",
     "protractor": "^4.0.14",
     "request": "^2.81.0"
   },

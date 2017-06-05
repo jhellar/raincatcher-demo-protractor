@@ -17,7 +17,7 @@ exports.config = {
 
   mochaOpts: {
     ui: 'bdd',
-    reporter: 'spec',
+    reporter: 'mocha-jenkins-reporter',
     slow: env.slowThreshold,
     timeout: env.mochaTimeout,
     bail: false,
