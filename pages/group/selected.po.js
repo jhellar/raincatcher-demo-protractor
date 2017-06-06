@@ -3,11 +3,9 @@ var utils = require('../../utils/utils');
 var SelectedGroupPage = function() {
 
   var locators = {
-    groupHeader: element(by.css('group-detail>md-toolbar>div>h3')),
-    groupDetails: element(by.css('group-detail group>md-list:nth-of-type(1)')).all(by.css('md-list-item')),
-    membersDetails: element(by.css('group-detail group>md-list:nth-of-type(2)')).all(by.css('md-list-item')),
-    //group-detail group>md-list:nth-of-type(1) // group details
-    //group-detail group>md-list:nth-of-type(2) // members of group
+    groupHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
+    groupDetails: element(by.css('group>md-list:nth-child(1)')).all(by.css('md-list-item')),
+    membersDetails: element(by.css('group>md-list:nth-child(3)')).all(by.css('md-list-item'))
   };
   var commands = {
     selfCheck: function(header) {

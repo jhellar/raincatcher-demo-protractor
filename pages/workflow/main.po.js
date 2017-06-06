@@ -14,8 +14,7 @@ var MainWorkflowPage = function() {
     editButton: element(by.css('a[aria-label="Edit"]')),
     cancelButton: element(by.css('button[aria-label="Cancel"]')),
 
-    // search : element(by.css('workflow-list>form>input[name="search"]')), // missing input name
-    search : element(by.css('workflow-list>form>input#search')),
+    search : element(by.css('form>input[id="search"]')), // missing workflow-list> and name attribute
     workflows: element.all(by.repeater('workflow in ctrl.workflows')),
     workflow: {
       title: by.css('div>div>p')

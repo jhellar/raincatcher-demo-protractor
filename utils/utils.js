@@ -256,12 +256,8 @@ var returnAllPromises = function(elements, elemCallFunc) {
 var pressButton = function(button) {
   return button.isPresent().then(function(result) {
     expectResultIsTrue(result);
-    button.click();
-  }).then(function() {
-    return button.isPresent();
-  }).then(function(result) {
-    expectResultIsFalse(result);
-  });
+    return button.click();
+  }); // TODO add posibility to transfer to another page when button pressed
 };
 
 var inherit = function(child, base, properties) {

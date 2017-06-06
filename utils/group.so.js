@@ -20,29 +20,14 @@ utils.inherit(GroupService, BaseService);
  * Select dropdowns from group form
  * @param {*} group details to be selected
  */
-GroupService.prototype.selectDropdowns = _.noop;
-// GroupService.prototype.selectDropdowns = function(group) {
-//   var role = element(by.xpath('//md-select-menu/md-content/md-option/div[starts-with(text(),"' + group.role + '")]'));
-//   var clickable = element(by.css('.md-select-menu-container.md-active'));
-
-//   ngp.locators.dropdowns.role.isPresent().then(function(result) {
-//     utils.expectEachResultsIsTrue(result);
-//     ngp.locators.dropdowns.role.click();
-//   }).then(function() {
-//     return role.isPresent();
-//   }).then(function(result) {
-//     utils.expectResultIsTrue(result);
-//     utils.waitClickable(clickable);
-//     role.click();
-//   });
-// };
+GroupService.prototype.selectDropdowns = _.noop; // TODO remove it from base service
 
 /**
  * Fill group details into fields
  * @param {*} group to be created
  */
 GroupService.prototype.fillInTheFields = function(group) {
-  ngp.locators.groupForm.isPresent().then(function(result) {
+  ngp.locators.groupForm.self.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
     ngp.commands.enterName(group.name);
   }).then(function() {
@@ -73,12 +58,12 @@ GroupService.prototype.expectFieldsPresent = function() {
   var isPresent = function(x) {
     return x.isPresent();
   };
-  isPresent(ngp.locators.groupForm).then(function(result) {
+  isPresent(ngp.locators.groupForm.self).then(function(result) {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(ngp.locators.fields, isPresent);
+    return utils.returnAllPromises(ngp.locators.groupForm.fields, isPresent);
   }).then(function(results) { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(ngp.locators.dropdowns, isPresent);
+    return utils.returnAllPromises(ngp.locators.groupForm.dropdowns, isPresent);
   }).then(function(results) { // dropdowns present
     utils.expectEachResultsIsTrue(results);
   });
@@ -93,8 +78,8 @@ GroupService.prototype.expectDetailsToBe = function(group) {
   .then(function(details) {
     var name = sgp.commands.getName(details);
     utils.expectResultIsEquelTo(name.h3, group.name);
-    var role = sgp.commands.getRole(details, group.role);
-    utils.expectResultIsEquelTo(role.h3, role);
+    var role = sgp.commands.getRole(details);
+    utils.expectResultIsEquelTo(role.h3, _.toLower(group.role));
     // sgp.commands.getMembers() // TODO implement members check
     // .then(function(members) {
     //   utils.expectResultIsEquelTo(members, group.members);
@@ -102,11 +87,13 @@ GroupService.prototype.expectDetailsToBe = function(group) {
   });
 };
 
-GroupService.prototype.expectElementInfo = function() {
-  console.log('RAINCATCH-793: need to implement Group functionality');
-  // mwp.locators.summaryInfo.isPresent().then(function(result) {
-  //   utils.expectEachResultsIsTrue(result);
-  // });
+GroupService.prototype.expectElementInfo = function(group) {
+  sgp.locators.groupHeader.isPresent().then(function(result) {
+    utils.expectResultIsTrue(result);
+    return sgp.locators.groupHeader.getText();
+  }).then(function(result) {
+    utils.expectResultIsEquelTo(result, group.name + ' Group');
+  });
 };
 
 GroupService.prototype.expectElementDetails = function(promise, expected, expectFunc) {

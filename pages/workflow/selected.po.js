@@ -4,7 +4,8 @@ var SelectedWorkflowPage = function() {
 
   var stepFormSelector = 'form[name="workflowStepForm"]';
   var locators = {
-    workflowHeader: element(by.css('workflow-detail>md-toolbar>div>h3')),
+
+    workflowHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
     workflowSteps: element.all(by.repeater('step in wfdCtrl.workflow.steps')), // get all steps but not [Add Step]
 
     stepForm: {

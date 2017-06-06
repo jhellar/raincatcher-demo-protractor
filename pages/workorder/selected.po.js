@@ -2,10 +2,10 @@ var utils = require('../../utils/utils');
 
 var SelectedWorkorderPage = function() {
   var locators = {
-    workorderHeader: element(by.css('workorder-summary>md-toolbar>div>h3')),
-    workorderDetails: element(by.css('workorder-summary>div>workorder>md-list')).all(by.css('md-list-item')),
-    workorderSummary: element(by.css('workorder-summary>div>workorder>p')),
-    workflow: element(by.css('workorder-summary>div>md-card>md-card-title>md-card-title-text>span'))
+    workorderHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
+    workorderDetails: element(by.css('workorder>md-list')).all(by.css('md-list-item')),
+    workSummary: element(by.css('workorder>p')),
+    workflow: element(by.css('md-card>md-card-title>md-card-title-text>span'))
   };
 
   var commands = {
@@ -61,8 +61,8 @@ var SelectedWorkorderPage = function() {
       });
       return title;
     },
-    getSummary: function() {
-      return locators.workorderSummary.getText();
+    getWorkSummary: function() {
+      return locators.workSummary.getText();
     },
     getWorkflow: function() {
       return locators.workflow.getText();

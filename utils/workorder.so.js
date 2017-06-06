@@ -27,9 +27,9 @@ WorkorderService.prototype.selectDropdowns = function(workorder) {
   var assignee = element(by.xpath("//md-select-menu/md-content/md-option/div[starts-with(text(),'" + workorder.assignee + "')]"));
   var clickable = element(by.css('.md-select-menu-container.md-active'));
 
-  nwp.locators.dropdowns.workflow.isPresent().then(function(result) {
+  nwp.locators.workorderForm.dropdowns.workflow.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
-    nwp.locators.dropdowns.workflow.click();
+    nwp.locators.workorderForm.dropdowns.workflow.click();
   }).then(function() {
     return workflow.isPresent();
   }).then(function(result) {
@@ -37,10 +37,10 @@ WorkorderService.prototype.selectDropdowns = function(workorder) {
     utils.waitUntilClickable(clickable);
     workflow.click();
   }).then(function() {
-    return nwp.locators.dropdowns.assignee.isPresent();
+    return nwp.locators.workorderForm.dropdowns.assignee.isPresent();
   }).then(function(result) {
     utils.expectResultIsTrue(result);
-    nwp.locators.dropdowns.assignee.click();
+    nwp.locators.workorderForm.dropdowns.assignee.click();
   }).then(function() {
     return assignee.isPresent();
   }).then(function(result) {
@@ -55,7 +55,7 @@ WorkorderService.prototype.selectDropdowns = function(workorder) {
  * @param {*} workorder to be created
  */
 WorkorderService.prototype.fillInTheFields = function(workorder) {
-  nwp.locators.workorderForm.isPresent().then(function(result) {
+  nwp.locators.workorderForm.self.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
     nwp.commands.enterTitle(workorder.title);
   }).then(function() {
@@ -65,10 +65,10 @@ WorkorderService.prototype.fillInTheFields = function(workorder) {
   }).then(function() {
     nwp.commands.enterLongitude(workorder.longitude);
   }).then(function() {
-    nwp.commands.enterStartDate(workorder.startDate);
-  }).then(function() {
-    nwp.commands.enterStartTime(workorder.startTime);
-  }).then(function() {
+  //   nwp.commands.enterStartDate(workorder.startDate); // TODO
+  // }).then(function() {
+  //   nwp.commands.enterStartTime(workorder.startTime); // TODO
+  // }).then(function() {
     nwp.commands.enterFinishDate(workorder.finishDate);
   }).then(function() {
     nwp.commands.enterFinishTime(workorder.finishTime);
@@ -81,8 +81,8 @@ WorkorderService.prototype.fillInTheFields = function(workorder) {
  * Clear specific fields on Item Form
  */
 WorkorderService.prototype.clearOtherFields = function() {
-  nwp.commands.clearStartDate();
-  nwp.commands.clearStartTime();
+  // nwp.commands.clearStartDate(); // TODO
+  // nwp.commands.clearStartTime(); // TODO
   nwp.commands.clearFinishDate();
   nwp.commands.clearFinishTime();
 };
@@ -107,15 +107,15 @@ WorkorderService.prototype.expectFieldsPresent = function() {
     return x.isPresent();
   };
   // var pageObject = this.pageObject;
-  isPresent(nwp.locators.workorderForm).then(function(result) {
+  isPresent(nwp.locators.workorderForm.self).then(function(result) {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.fields, isPresent);
+    return utils.returnAllPromises(nwp.locators.workorderForm.fields, isPresent);
   }).then(function(results) { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.dropdowns, isPresent);
+    return utils.returnAllPromises(nwp.locators.workorderForm.dropdowns, isPresent);
   }).then(function(results) { // dropdowns present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.datetime, isPresent);
+    return utils.returnAllPromises(nwp.locators.workorderForm.datetime, isPresent);
   }).then(function(results) { // date and time present
     utils.expectEachResultsIsTrue(results);
   });
@@ -140,7 +140,7 @@ WorkorderService.prototype.expectDetailsToBe = function(workorder) {
     utils.expectResultIsEquelTo(finishTime.h3.substring(0, 5), workorder.finishTime.substring(0, 5));
     var assignee = swp.commands.getAssignee(details);
     utils.expectResultIsEquelTo(assignee.h3, workorder.assignee);
-    swp.commands.getSummary()
+    swp.commands.getWorkSummary()
     .then(function(summary) {
       utils.expectResultIsEquelTo(summary, workorder.summary);
     });
@@ -151,11 +151,13 @@ WorkorderService.prototype.expectDetailsToBe = function(workorder) {
   });
 };
 
-WorkorderService.prototype.expectElementInfo = function() {
-  console.log('RAINCATCH-781: need to implement Workorder functionality');
-  // mwp.locators.summaryInfo.isPresent().then(function(result) { // RAINCATCH-641
-  //   utils.expectEachResultsIsTrue(result);
-  // });
+WorkorderService.prototype.expectElementInfo = function(workorder) {
+  swp.locators.workorderHeader.isPresent().then(function(result) {
+    utils.expectResultIsTrue(result);
+    return swp.locators.workorderHeader.getText();
+  }).then(function(result) {
+    utils.expectResultIsEquelTo(result, 'Work order : ' + workorder.title);
+  });
 };
 
 WorkorderService.prototype.expectElementDetails = function(promise, expected, expectFunc) {

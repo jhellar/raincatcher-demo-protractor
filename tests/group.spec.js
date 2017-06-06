@@ -19,139 +19,148 @@ describe('Group E2E', function() {
     authService.checkPortalLoginWasSuccessful();
   });
 
-  describe('SETUP', function() {
-    step('create groups', function() {
-      groupService.create(data.groups.UPDATE1);
-      groupService.create(data.groups.DELETE);
-      groupService.create(data.groups.CANCEL);
-      groupService.create(data.groups.SEARCH);
-      groupService.create(data.groups.ADD);
-    });
-  });
-
-  describe('CREATE', function() {
-
-    step('create an empty{} group', function() {
+  context('CREATE', function() {
+    it('create an empty{} group', function() {
       groupService.create({}, true);
     });
-    step('required field warinigs shown', function() {
+    it('required field warinigs shown', function() {
       groupService.expectWarningsPresent();
     });
-    step('create new ' + data.params.GROUP_TCREATE + ' group', function() {
+    it('create ' + data.params.GROUP_TCREATE + ' group', function() {
       groupService.create(data.groups.CREATE);
     });
-    xit('RAINCATCH-793: expect ' + data.params.GROUP_TCREATE + ' group details', function() {
+    it('RAINCATCH-793: expect ' + data.params.GROUP_TCREATE + ' group details', function() {
       groupService.expectDetailsToBe(data.groups.CREATE);
     });
-    step('expect ' + data.params.GROUP_TCREATE + ' group in list', function() {
+    it('expect ' + data.params.GROUP_TCREATE + ' group in list', function() {
       groupService.expectToBeInList(data.groups.CREATE);
     });
+    after('remove ' + data.params.GROUP_TCREATE + ' group', function() {
+      groupService.remove(data.groups.CREATE);
+    });
   });
 
-  describe('UPDATE', function() {
-    step('update ' + data.params.GROUP_TUPDATE1 + ' group details', function() {
+  context('UPDATE', function() {
+    before('create ' + data.params.GROUP_TUPDATE1 + ' group', function() {
+      groupService.create(data.groups.UPDATE1);
+    });
+    it('update ' + data.params.GROUP_TUPDATE1 + ' group details', function() {
       groupService.update(data.groups.UPDATE1, data.groups.UPDATE2);
     });
-    xit('RAINCATCH-793: check ' + data.params.GROUP_TUPDATE2 + ' group details', function() {
+    it('RAINCATCH-793: check ' + data.params.GROUP_TUPDATE2 + ' group details', function() {
       groupService.expectDetailsToBe(data.groups.UPDATE2);
     });
-    step('check ' + data.params.GROUP_TUPDATE2 + ' group in list', function() {
+    it('check ' + data.params.GROUP_TUPDATE2 + ' group in list', function() {
       groupService.expectToBeInList(data.groups.UPDATE2);
     });
-    step('check ' + data.params.GROUP_TUPDATE1 + ' group not in list', function() {
+    it('check ' + data.params.GROUP_TUPDATE1 + ' group not in list', function() {
       groupService.expectNotInTheList(data.groups.UPDATE1);
     });
+    after('remove ' + data.params.GROUP_TUPDATE2 + ' group', function() {
+      groupService.remove(data.groups.UPDATE2);
+    });
   });
 
-  describe('CANCEL', function() {
-    step('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
+  context('CANCEL', function() {
+    before('create ' + data.params.GROUP_TCANCEL + ' group', function() {
+      groupService.create(data.groups.CANCEL);
+    });
+    it('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
       groupService.open(data.groups.CANCEL);
     });
-    step('press [delete] button', function() {
+    it('press [delete] button', function() {
       groupService.pressDeleteButton();
     });
-    step('press [cancel] button', function() {
+    it('press [cancel] button', function() {
       groupService.pressCancelButton();
     });
-    step('check ' + data.params.GROUP_TCANCEL + ' group in list', function() {
+    it('check ' + data.params.GROUP_TCANCEL + ' group in list', function() {
       groupService.expectToBeInList(data.groups.CANCEL);
     });
-    step('press [new] button', function() {
+    it('press [new] button', function() {
       groupService.pressNewButton();
     });
-    step('press [cancel] button', function() {
+    it('press [cancel] button', function() {
       groupService.pressNewCancelButton();
     });
-    step('check [new] button visible', function() {
+    it('check [new] button visible', function() {
       groupService.expectNewButtonIsPresent();
     });
-    step('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
+    it('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
       groupService.open(data.groups.CANCEL);
     });
-    step('press [edit] button', function() {
+    it('press [edit] button', function() {
       groupService.pressEditButton();
     });
-    step('press [cancel] button', function() {
+    it('press [cancel] button', function() {
       groupService.pressNewCancelButton();
     });
-    xit('RAINCATCH-793: check ' + data.params.GROUP_TCANCEL + ' group details', function() {
+    it('RAINCATCH-793: check ' + data.params.GROUP_TCANCEL + ' group details', function() {
       groupService.expectDetailsToBe(data.groups.CANCEL);
     });
+    after('remove ' + data.params.GROUP_TCANCEL + ' group', function() {
+      groupService.remove(data.groups.CANCEL);
+    });
   });
 
-  describe('SEARCH', function() {
+  context('SEARCH', function() {
     var searched;
-    step('search field is visible and ' + data.params.GROUP_TSEARCH + 'is searched', function() {
+    before('create ' + data.params.GROUP_TSEARCH + ' group', function() {
+      groupService.create(data.groups.SEARCH);
+    });
+    it('search field is visible and ' + data.params.GROUP_TSEARCH + 'is searched', function() {
       searched = groupService.search(data.groups.SEARCH, 1);
     });
-    step('check ' + data.params.GROUP_TSEARCH + ' group in list', function() {
+    it('check ' + data.params.GROUP_TSEARCH + ' group in list', function() {
       groupService.expectElementDetailsEqualTo(searched, data.groups.SEARCH);
     });
-    step('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
+    it('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
       groupService.expectElementDetailsNotEqualTo(searched, data.groups.DELETE);
     });
-    step('search reset to list all groups', function() {
+    it('search reset to list all groups', function() {
       groupService.searchReset();
     });
+    it('remove ' + data.params.GROUP_TSEARCH + ' group', function() {
+      groupService.remove(data.groups.SEARCH);
+    });
   });
 
-  describe('ADD WORKER TO GROUP', function() {
-    step('create test worker', function() {
+  context('ADD WORKER TO GROUP', function() {
+    before('create ' + data.params.GROUP_TADD + ' groups', function() {
+      groupService.create(data.groups.ADD);
+    });
+    it('create test worker', function() {
       workerService.create(data.workers.ADD);
     });
-    step('open test group', function() {
+    it('open test group', function() {
       groupService.open(data.groups.ADD);
     });
-    step('verify test worker is in list of test group', function() {
+    it('verify test worker is in list of test group', function() {
       groupService.verifyWorkerInList(data.workers.ADD);
     });
-    step('remove test worker', function() {
+    it('remove test worker', function() {
       workerService.remove(data.workers.ADD);
     });
-    step('open test group', function() {
+    it('open test group', function() {
       groupService.open(data.groups.ADD);
     });
-    step('verify test worker is not in list of test group', function() {
+    it('verify test worker is not in list of test group', function() {
       groupService.verifyWorkerNotInList(data.workers.ADD);
     });
+    after('remove ' + data.params.GROUP_TADD + ' group', function() {
+      groupService.remove(data.groups.ADD);
+    });
   });
 
-  describe('DELETE', function() {
-    step('remove ' + data.params.GROUP_TDELETE + ' group', function() {
+  context('DELETE', function() {
+    before('create ' + data.params.GROUP_TDELETE + ' group', function() {
+      groupService.create(data.groups.DELETE);
+    });
+    it('remove ' + data.params.GROUP_TDELETE + ' group', function() {
       groupService.remove(data.groups.DELETE);
     });
-    step('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
+    it('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
       groupService.expectNotInTheList(data.groups.DELETE);
-    });
-  });
-
-  describe('CLEANUP', function() {
-    step('remove groups', function() {
-      groupService.remove(data.groups.CREATE);
-      groupService.remove(data.groups.UPDATE2);
-      groupService.remove(data.groups.CANCEL);
-      groupService.remove(data.groups.SEARCH);
-      groupService.remove(data.groups.ADD);
     });
   });
 });

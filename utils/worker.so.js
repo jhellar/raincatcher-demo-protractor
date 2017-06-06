@@ -13,6 +13,8 @@ var swp = pageObject.selected;
 var utils = require('../utils/utils');
 var BaseService = require('../utils/base.so');
 
+var _ = require('lodash');
+
 function WorkerService() {
   pageObject.new.locators.itemForm = pageObject.new.locators.workerForm;
   BaseService.call(this, pageObject);
@@ -26,9 +28,9 @@ utils.inherit(WorkerService, BaseService);
  */
 WorkerService.prototype.selectDropdowns = function(worker) {
   var group = element(by.xpath('//md-select-menu/md-content//div[text()="' + worker.group + '"]'));
-  nwp.locators.dropdowns.group.isPresent().then(function(result) {
+  nwp.locators.workerForm.dropdowns.group.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
-    return nwp.locators.dropdowns.group.click();
+    return nwp.locators.workerForm.dropdowns.group.click();
   }).then(function() {
     return group.isPresent();
   }).then(function(result) {
@@ -43,7 +45,7 @@ WorkerService.prototype.selectDropdowns = function(worker) {
  * @param {*} worker to be created
  */
 WorkerService.prototype.fillInTheFields = function(worker) {
-  nwp.locators.workerForm.isPresent().then(function(result) {
+  nwp.locators.workerForm.self.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
     nwp.commands.enterName(worker.name);
   }).then(function() {
@@ -66,9 +68,7 @@ WorkerService.prototype.fillInTheFields = function(worker) {
 /**
  * Clear specific fields on Item Form
  */
-WorkerService.prototype.clearOtherFields = function() {
-  // Empty function
-};
+WorkerService.prototype.clearOtherFields = _.noop;
 
 /**
  * TODO this is with using search input
@@ -122,12 +122,12 @@ WorkerService.prototype.expectFieldsPresent = function() {
   var isPresent = function(x) {
     return x.isPresent();
   };
-  isPresent(nwp.locators.workerForm).then(function(result) {
+  isPresent(nwp.locators.workerForm.self).then(function(result) {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.fields, isPresent);
+    return utils.returnAllPromises(nwp.locators.workerForm.fields, isPresent);
   }).then(function(results) { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.dropdowns, isPresent);
+    return utils.returnAllPromises(nwp.locators.workerForm.dropdowns, isPresent);
   }).then(function(results) { // dropdowns present
     utils.expectEachResultsIsTrue(results);
   });
@@ -157,9 +157,12 @@ WorkerService.prototype.expectDetailsToBe = function(worker) {
   });
 };
 
-WorkerService.prototype.expectElementInfo = function() {
-  swp.locators.informationPage.isPresent().then(function(result) {
+WorkerService.prototype.expectElementInfo = function(worker) {
+  swp.locators.workerHeader.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
+    return swp.locators.workerHeader.getText();
+  }).then(function(result) {
+    utils.expectResultIsEquelTo(result, 'Worker : ' + worker.name);
   });
 };
 

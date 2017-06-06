@@ -27,7 +27,7 @@ WorkflowService.prototype.selectDropdowns = _.noop;
  * @param {*} workflow to be created
  */
 WorkflowService.prototype.fillInTheFields = function(workflow) {
-  nwp.locators.workflowForm.isPresent().then(function(result) {
+  nwp.locators.workflowForm.self.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
     nwp.commands.enterTitle(workflow.title);
   });
@@ -56,12 +56,12 @@ WorkflowService.prototype.expectFieldsPresent = function() {
   var isPresent = function(x) {
     return x.isPresent();
   };
-  isPresent(nwp.locators.workflowForm).then(function(result) {
+  isPresent(nwp.locators.workflowForm.self).then(function(result) {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.fields, isPresent);
+    return utils.returnAllPromises(nwp.locators.workflowForm.fields, isPresent);
   }).then(function(results) { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.dropdowns, isPresent);
+    return utils.returnAllPromises(nwp.locators.workflowForm.dropdowns, isPresent);
   }).then(function(results) { // dropdowns present
     utils.expectEachResultsIsTrue(results);
   });
@@ -83,9 +83,12 @@ WorkflowService.prototype.expectDetailsToBe = function(workflow) { // TODO imple
   });
 };
 
-WorkflowService.prototype.expectElementInfo = function() { // TODO implement
-  swp.locators.stepForm.self.isPresent().then(function(result) {
+WorkflowService.prototype.expectElementInfo = function(workflow) { // TODO implement
+  swp.locators.workflowHeader.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
+    return swp.locators.workflowHeader.getText();
+  }).then(function(result) {
+    utils.expectResultIsEquelTo(result, workflow.title);
   });
 };
 

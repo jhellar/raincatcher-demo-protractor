@@ -3,14 +3,12 @@ var utils = require('../../utils/utils');
 var SelectedWorkerPage = function() {
 
   var locators = {
-    workerHeader: element(by.css('worker-detail>md-toolbar>div>h3')),
-    workerDetails: element(by.css('worker-detail worker>md-content>md-list')).all(by.css('md-list-item')),
+    workerHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
+    workerDetails: element(by.css('worker>md-content>md-list')).all(by.css('md-list-item')),
     notes: element(by.css('worker-detail worker>md-content>md-list>p')),
 
-    workordersPage: element(by.xpath('//md-tabs//md-tab-item[text()="Workorders"]')),
-    informationPage: element(by.xpath('//md-tabs//md-tab-item[text()="Information"]')),
-    // informationPage: element(by.xpath('//md-tabs//md-tab-item/span[text()="Information"]')), // old
-    workorderItem: element(by.css('.workorder-item')),
+    workordersPage: element(by.xpath('//md-tabs//md-tab-item/span[text()="Workorders"]')),
+    informationPage: element(by.xpath('//md-tabs//md-tab-item/span[text()="Information"]')),
   };
   var commands = {
     selfCheck: function(header) {
@@ -22,13 +20,9 @@ var SelectedWorkerPage = function() {
       });
     },
     openWorkordersPage: function() {
-      locators.workordersPage.isPresent().then(function(result) {
+      return locators.workordersPage.isPresent().then(function(result) {
         utils.expectResultIsTrue(result);
-        locators.workordersPage.click();
-      }).then(function() {
-        return locators.workorderItem.isPresent();
-      }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        return locators.workordersPage.click();
       });
     },
     getDetails: function() {
