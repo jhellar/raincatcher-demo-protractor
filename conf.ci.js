@@ -37,8 +37,7 @@ exports.config = {
       console.log('Browser Max Window Size', result);
       browser.driver.manage().timeouts().pageLoadTimeout(env.defaultPageLoadTimeout);
       browser.driver.manage().timeouts().implicitlyWait(env.defaultImplicitWait);
-      // browser.driver.manage().window().maximize();
-      // browser.driver.manage().window().setSize(result.width, result.height);
+      browser.driver.manage().window().maximize();
     }).then(function() { // setup expect as global
       var chai = require('chai');
       var chaiAsPromised = require('chai-as-promised');

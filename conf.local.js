@@ -39,7 +39,6 @@ exports.config = {
       };
     }).then(function(result) {
       console.log('Browser Max Window Size', result);
-      // browser.driver.manage().window().maximize();
       browser.driver.manage().window().setSize(result.width, result.height);
     }).then(function() { // setup expect as global
       var chai = require('chai');
