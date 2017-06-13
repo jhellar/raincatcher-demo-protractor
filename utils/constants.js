@@ -24,7 +24,7 @@ module.exports = {
     URL: '/login',
     DEFAULT_HEADING: 'FeedHenry WFM Demo',
     DEFAULT_BODY: 'Trouble logging in? Contact the switchboard.',
-    AUTH_FAIL_MSG: 'Authentication Failed! Try Again. (Error: User not found with supplied credentials)',
+    AUTH_FAIL_MSG: 'Authentication Failed! Try Again.',
     VALUE_ATTRIBUTE: 'value',
     USERNAME_MISSING_MSG: 'A username is required.',
     PASSWORD_MISSING_MSG: 'A password is required.'

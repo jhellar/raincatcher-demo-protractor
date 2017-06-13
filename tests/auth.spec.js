@@ -4,6 +4,19 @@ var authService = new AuthService();
 
 describe('Portal and Client Authentication Testing', function() {
   describe('Portal Authentication Tests', function() {
+
+    after('reseting ' + constants.auth.userFullName.DAISY + '\'s password', function() {
+      authService.openPortal();
+      authService.loginPortal(constants.auth.usernames.DAISY_DIALER,
+        constants.auth.NEW_PASSWORD);
+      authService.checkPortalLoginWasSuccessful();
+      authService.openPortalUserSettings(constants.auth.userFullName.DAISY);
+      authService.openUserUpdateScreen();
+      authService.changeUserPassword(constants.auth.DEFAULT_PASSWORD);
+      authService.navigateToPortalLogoutPage();
+      authService.logoutOfPortal();
+    });
+
     describe('Portal Authnetication Success Tests', function() {
       describe('Testing Login to Portal', function() {
         it('should open portal login page', function() {
@@ -112,6 +125,10 @@ describe('Portal and Client Authentication Testing', function() {
 
         it('should open user settings page for ' + constants.auth.userFullName.DAISY, function() {
           authService.openPortalUserSettings(constants.auth.userFullName.DAISY);
+        });
+
+        it('should open user update screen for ' + constants.auth.userFullName.DAISY, function() {
+          authService.openUserUpdateScreen();
         });
 
         it('should change the user password', function() {

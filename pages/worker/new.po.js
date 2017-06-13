@@ -9,7 +9,7 @@ var NewWorkerPage = function() {
       fields: {
         name: element(by.css(workerFormSelector + ' #workername')),
         username: element(by.css(workerFormSelector + ' #username')),
-        password: element(by.css(workerFormSelector + ' #password')),
+        password: element(by.model('ctrl.model.password')),
         banner: element(by.css(workerFormSelector + ' #banner')),
         avatar: element(by.css(workerFormSelector + ' #avatar')),
         phone: element(by.css(workerFormSelector + ' #phonenumber')),
@@ -73,7 +73,7 @@ var NewWorkerPage = function() {
       locators.workerForm.fields.position.sendKeys(position);
     },
     changePassword: function(password) {
-      locators. workerForm.self.isPresent().then(function(result) {
+      locators.workerForm.self.isPresent().then(function(result) {
         utils.expectResultIsTrue(result);
         return locators.workerForm.fields.password.clear();
       }).then(function(result) {

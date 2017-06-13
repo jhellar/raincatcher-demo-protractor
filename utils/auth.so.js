@@ -92,15 +92,39 @@ AuthService.prototype.openPortalUserSettings = function(userFullName) {
 };
 
 /**
+ *
+ * @returns {Promise<R>}
+ */
+AuthService.prototype.openUserUpdateScreen = function() {
+  return mwp.locators.editButton.isPresent().then(function(result) {
+    utils.expectResultIsTrue(result);
+    return mwp.locators.editButton.click().then(function(result) {
+      utils.expectResultIsNull(result);
+      return cwp.locators.workerForm.buttons.update.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+      });
+    });
+  });
+};
+
+/**
  * Used to change the users password of a worker
  * @param  {String} newPassword The new password of the user
  * @return {*}      changes user password
  */
-AuthService.prototype.changeUserPassword = function(newPassword) {
-  mwp.locators.editButton.click();
-  cwp.commands.changePassword(newPassword);
-  // cwp.locators.updateButton.click(); // BUG should be Update Button
-  cwp.locators.createButton.click();
+AuthService.prototype.changeUserPassword = function(newPassword) { // this method is broken
+  return cwp.locators.workerForm.fields.password.sendKeys(newPassword).then(function(result) {
+    utils.expectResultIsNull(result);
+    return cwp.locators.workerForm.buttons.update.isPresent().then(function(result) {
+      utils.expectResultIsTrue(result);
+      return cwp.locators.workerForm.buttons.update.click().then(function(result) {
+        utils.expectResultIsNull(result);
+        return mwp.locators.editButton.isPresent().then(function(result) {
+          utils.expectResultIsTrue(result);
+        });
+      });
+    });
+  });
 };
 
 /**

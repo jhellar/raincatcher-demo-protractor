@@ -23,14 +23,20 @@ var NavigationTab = function() {
     mapPage: function() {
       utils.navigateToSection(locators.navListItems.get(4));
     },
-    filesPage: function() {
+    messagesPage: function() {
       utils.navigateToSection(locators.navListItems.get(5));
     },
-    workflowsPage: function() {
+    filesPage: function() {
       utils.navigateToSection(locators.navListItems.get(6));
     },
-    settingsPage: function() {
+    workflowsPage: function() {
+      utils.navigateToSection(locators.navListItems.get(7));
+    },
+    formsPage: function() {
       utils.navigateToSection(locators.navListItems.get(8));
+    },
+    analyticsPage: function() {
+      utils.navigateToSection(locators.navListItems.get(9));
     },
     logoutPage: function() {
       utils.navigateToSection(locators.navListItems.last());

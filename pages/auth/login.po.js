@@ -16,7 +16,7 @@ var LoginPage = function() {
     warnings: {
       usernameWarningMessage: element(by.css('[ng-messages="loginForm.username.$error"]')),
       passwordWarningMessage: element(by.css('[ng-messages="loginForm.password.$error"]')),
-      incorrectDetailsMessage: element(by.css('div.ng-binding.ng-scope'))
+      incorrectDetailsMessage: element(by.css('div[ng-message="error"]'))
     }
   };
 
