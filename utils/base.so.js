@@ -24,15 +24,16 @@ BaseService.prototype.create = function(item, dummyParams) {
     pageObject.new.commands.selfCheck();
     self.expectFieldsPresent();
   }).then(function() {
-    if (!dummyParams) {
-      self.selectDropdowns(item);
+    if (!dummyParams && pageObject.new.locators.itemForm.dropdowns) {
+      utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
     }
   }).then(function() {
-    if (!dummyParams) {
-      self.fillInTheFields(item);
+    if (!dummyParams) { // fill dropdowns
+      utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
     }
+  }).then(function() {
     utils.pressButton(pageObject.new.locators.itemForm.buttons.create);
-  }).then(function() {
+  }).then(function() { // fill fields
     if (!dummyParams) { // TODO RAINCATCH-641
       self.expectElementInfo(item);
     }
@@ -52,11 +53,12 @@ BaseService.prototype.update = function(toUpdate, updatee) {
     utils.pressButton(pageObject.main.locators.editButton);
   }).then(function() {
     self.clearAllFields();
-  }).then(function() {
-    self.selectDropdowns(updatee);
-    // TOOD need ID of item /items/list/item/<item-id>/edit
-  }).then(function() {
-    self.fillInTheFields(updatee);
+  }).then(function() { // fill dropdowns
+    if (pageObject.new.locators.itemForm.dropdowns) {
+      utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
+    }
+  }).then(function() { // fill fields
+    utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee);
   }).then(function() {
     utils.pressButton(pageObject.new.locators.itemForm.buttons.update);
   });
@@ -112,7 +114,7 @@ BaseService.prototype.search = function(item, count) {
   }).then(function() {
     self.searchForItem(item, count);
   }).then(function() {
-    return pageObject.main.commands.firstInTheList();
+    return pageObject.main.commands.first();
   });
 };
 
@@ -268,23 +270,6 @@ BaseService.prototype.expectNewButtonIsPresent = function() {
 //################################################################################
 //                                OVERRIDDEN FUNCTIONS
 //################################################################################
-/**
- * Select dropdowns from item form
- * @param {*} item details to be selected
- */
-BaseService.prototype.selectDropdowns = function(item) {
-  _.noop(item);
-  throw new Error('Override this method in super class');
-};
-
-/**
- * FIll item details into fields
- * @param {*} item to be created
- */
-BaseService.prototype.fillInTheFields = function(item) {
-  _.noop(item);
-  throw new Error('Override this method in super class');
-};
 
 /**
  * Clear specific fields on Item Form

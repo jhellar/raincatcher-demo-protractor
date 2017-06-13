@@ -16,11 +16,11 @@ var groups = {
   },
   UPDATE1: {
     name: params.GROUP_TUPDATE1,
-    role: 'Admin'
+    role: 'Manager'
   },
   UPDATE2: {
     name: params.GROUP_TUPDATE2,
-    role: 'Admin'
+    role: 'Worker'
   },
   DELETE: {
     name: params.GROUP_TDELETE,
@@ -28,15 +28,15 @@ var groups = {
   },
   CANCEL: {
     name: params.GROUP_TCANCEL,
-    role: 'Admin'
+    role: 'Manager'
   },
   SEARCH: {
     name: params.GROUP_TSEARCH,
-    role: 'Admin'
+    role: 'Worker'
   },
   ADD: {
     name: params.GROUP_TADD,
-    role: 'Admin'
+    role: 'Worker'
   }
 };
 

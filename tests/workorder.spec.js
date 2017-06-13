@@ -64,7 +64,7 @@ describe('Workorder E2E', function() {
       });
     });
 
-    context.skip('UPDATE', function() {
+    context('UPDATE', function() {
       before('create ' + data.params.WORKORDER_TUPDATE1 + ' workorder', function() {
         workorderService.create(data.workorders.UPDATE1);
       });

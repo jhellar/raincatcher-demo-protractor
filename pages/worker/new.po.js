@@ -12,7 +12,7 @@ var NewWorkerPage = function() {
         password: element(by.model('ctrl.model.password')),
         banner: element(by.css(workerFormSelector + ' #banner')),
         avatar: element(by.css(workerFormSelector + ' #avatar')),
-        phone: element(by.css(workerFormSelector + ' #phonenumber')),
+        phonenumber: element(by.css(workerFormSelector + ' #phonenumber')),
         email: element(by.css(workerFormSelector + ' #email')),
         position: element(by.css(workerFormSelector + ' #position')),
       },
@@ -22,7 +22,7 @@ var NewWorkerPage = function() {
       warnings: {
         name: element(by.css(workerFormSelector + ' #workername[aria-invalid="true"]')),
         username: element(by.css(workerFormSelector + ' #username[aria-invalid="true"]')),
-        phone: element(by.css(workerFormSelector + ' #phonenumber[aria-invalid="true"]')),
+        phonenumber: element(by.css(workerFormSelector + ' #phonenumber[aria-invalid="true"]')),
         email: element(by.css(workerFormSelector + ' #email[aria-invalid="true"]')),
         position: element(by.css(workerFormSelector + ' #position[aria-invalid="true"]')),
         group: element(by.css(workerFormSelector + ' #group[aria-invalid="true"]')),
@@ -63,8 +63,8 @@ var NewWorkerPage = function() {
     enterAvatar: function(avatar) {
       locators.workerForm.fields.avatar.sendKeys(avatar);
     },
-    enterPhone: function(phone) {
-      locators.workerForm.fields.phone.sendKeys(phone);
+    enterPhoneNumber: function(phoneNumber) {
+      locators.workerForm.fields.phone.sendKeys(phoneNumber);
     },
     enterEmail: function(email) {
       locators.workerForm.fields.email.sendKeys(email);
@@ -79,6 +79,54 @@ var NewWorkerPage = function() {
       }).then(function(result) {
         utils.expectResultIsNull(result);
         locators.workerForm.fields.password.sendKeys(password);
+      });
+    },
+    checkNameWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.NAME_MISSING_MSG);
+        });
+      });
+    },
+    checkUsernameWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.USERNAME_MISSING_MSG);
+        });
+      });
+    },
+    checkPhoneNumberWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.PHONE_NUMBER_MISSING_MSG);
+        });
+      });
+    },
+    checkEmailWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.EMAIL_MISSING_MSG);
+        });
+      });
+    },
+    checkPositionWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.POSITION_MISSING_MSG);
+        });
+      });
+    },
+    checkGroupWarningMessage: function() {
+      return locators.workerForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workerForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workers.GROUP_MISSING_MSG);
+        });
       });
     }
   };

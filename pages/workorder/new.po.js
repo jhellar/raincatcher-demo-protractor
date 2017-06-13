@@ -84,7 +84,7 @@ var NewWorkorderPage = function() {
     enterSummary: function(summary) {
       return locators.workorderForm.fields.summary.sendKeys(summary);
     },
-    // clear date and time data
+    // clear DATE and TIME data
     clearStartDate() {
       locators.workorderForm.datetime.startDate.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
     },
@@ -96,6 +96,70 @@ var NewWorkorderPage = function() {
     },
     clearFinishTime() {
       locators.workorderForm.datetime.finishTime.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+    },
+    checkWorkflowWarningMessage: function() {
+      return locators.workorderForm.warnings.workflow.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.workflow.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.WORKFLOW_MISSING_MSG);
+        });
+      });
+    },
+    checkTitleWarningMessage: function() {
+      return locators.workorderForm.warnings.title.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.title.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.TITLE_MISSING_MSG);
+        });
+      });
+    },
+    checkAddressWarningMessage: function() {
+      return locators.workorderForm.warnings.address.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.address.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.ADDRESS_MISSING_MSG);
+        });
+      });
+    },
+    checkLatitudeWarningMessage: function() {
+      return locators.workorderForm.warnings.latitude.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.latitude.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.LATITUDE_MISSING_MSG);
+        });
+      });
+    },
+    checkLongitudeWarningMessage: function() {
+      return locators.workorderForm.warnings.longitude.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.longitude.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.LONGITUDE_MISSING_MSG);
+        });
+      });
+    },
+    checkFinishDateWarningMessage: function() {
+      return locators.workorderForm.warnings.finishDate.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.finishDate.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.FINISH_DATE_MISSING_MSG);
+        });
+      });
+    },
+    checkFinishTimeWarningMessage: function() {
+      return locators.workorderForm.warnings.finishTime.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.finishTime.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.FINISH_TIME_MISSING_MSG);
+        });
+      });
+    },
+    checkSummaryWarningMessage: function() {
+      return locators.workorderForm.warnings.summary.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workorderForm.warnings.summary.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workorders.SUMMARY_MISSING_MSG);
+        });
+      });
     }
   };
 

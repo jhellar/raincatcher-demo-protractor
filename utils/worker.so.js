@@ -23,49 +23,6 @@ function WorkerService() {
 utils.inherit(WorkerService, BaseService);
 
 /**
- * Select dropdowns from worker form
- * @param {*} worker details to be selected
- */
-WorkerService.prototype.selectDropdowns = function(worker) {
-  var group = element(by.xpath('//md-select-menu/md-content//div[text()="' + worker.group + '"]'));
-  nwp.locators.workerForm.dropdowns.group.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    return nwp.locators.workerForm.dropdowns.group.click();
-  }).then(function() {
-    return group.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    utils.waitUntilClickable($('.md-select-menu-container.md-active'));
-    group.click();
-  });
-};
-
-/**
- * Fill worker details into fields
- * @param {*} worker to be created
- */
-WorkerService.prototype.fillInTheFields = function(worker) {
-  nwp.locators.workerForm.self.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    nwp.commands.enterName(worker.name);
-  }).then(function() {
-    nwp.commands.enterUsername(worker.username);
-  }).then(function() {
-    nwp.commands.enterPassword(worker.password);
-  }).then(function() {
-    nwp.commands.enterBanner(worker.banner);
-  }).then(function() {
-    nwp.commands.enterAvatar(worker.avatar);
-  }).then(function() {
-    nwp.commands.enterPhone(worker.phonenumber);
-  }).then(function() {
-    nwp.commands.enterEmail(worker.email);
-  }).then(function() {
-    nwp.commands.enterPosition(worker.position);
-  });
-};
-
-/**
  * Clear specific fields on Item Form
  */
 WorkerService.prototype.clearOtherFields = _.noop;
@@ -76,42 +33,10 @@ WorkerService.prototype.clearOtherFields = _.noop;
  * @param {*} worker to be searched
  */
 WorkerService.prototype.searchForItem = function(worker, count) {
-  return pageObject.main.commands.search(worker.title).then(function() {
-    pageObject.main.commands.count().then(function(c) {
+  return mwp.commands.search(worker.name).then(function() {
+    mwp.commands.count().then(function(c) {
       utils.expectResultIsEquelTo(c, count);
     });
-  });
-};
-
-/**
- * Search for specific worker
- * @param {*} worker to be searched
- * TODO this is FIX without using search input
- */
-WorkerService.prototype.search = function(worker) {
-  return mwp.commands.sideClick().then(function() {
-    mwp.commands.selfCheck();
-  }).then(function() {
-    return mwp.locators.workers.filter(function(wrk) {
-      return wrk.element(mwp.locators.worker.fullName).getText().then(function(text) {
-        return text === this.fullName;
-      }.bind({ fullName: worker.name }));
-    })
-    .then(function(filtered) {
-      return filtered[0];
-    });
-  });
-};
-
-/**
- * Expect item not in items list
- * @param {*} item
- * TODO this is FIX without using search input
- */
-WorkerService.prototype.expectNotInTheList = function(worker) {
-  var promise = this.search(worker);
-  promise.then(function(found) {
-    utils.expectResultIsUndefined(found);
   });
 };
 

@@ -9,9 +9,6 @@ var NewWorkflowPage = function() {
       fields : {
         title: element(by.css(workflowFormSelector + ' #title')),
       },
-      dropdowns: {
-      // no dropdowns on this page
-      },
       warnings: {
         title: element(by.css(workflowFormSelector + ' #title[aria-invalid="true"]'))
       },
@@ -40,6 +37,14 @@ var NewWorkflowPage = function() {
     },
     clearTitle: function() {
       locators.workflowForm.fields.title.clear();
+    },
+    checkTitleWarningMessage: function() {
+      return locators.workflowForm.warnings.title.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.workflowForm.warnings.title.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.workflows.TITLE_MISSING_MSG); // TODO title message is required
+        });
+      });
     }
   };
 

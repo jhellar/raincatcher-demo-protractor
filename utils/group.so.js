@@ -17,25 +17,6 @@ function GroupService() {
 utils.inherit(GroupService, BaseService);
 
 /**
- * Select dropdowns from group form
- * @param {*} group details to be selected
- */
-GroupService.prototype.selectDropdowns = _.noop; // TODO remove it from base service
-
-/**
- * Fill group details into fields
- * @param {*} group to be created
- */
-GroupService.prototype.fillInTheFields = function(group) {
-  ngp.locators.groupForm.self.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    ngp.commands.enterName(group.name);
-  }).then(function() {
-    ngp.commands.enterRole(group.role);
-  });
-};
-
-/**
  * Clear specific fields on Group Form
  */
 GroupService.prototype.clearOtherFields = _.noop;
@@ -44,8 +25,8 @@ GroupService.prototype.clearOtherFields = _.noop;
  * @param {*} group to be searched
  */
 GroupService.prototype.searchForItem = function(group, count) {
-  return pageObject.main.commands.search(group.name).then(function() {
-    pageObject.main.commands.count().then(function(c) {
+  return mgp.commands.search(group.name).then(function() {
+    mgp.commands.count().then(function(c) {
       utils.expectResultIsEquelTo(c, count);
     });
   });

@@ -17,23 +17,6 @@ function WorkflowService() {
 utils.inherit(WorkflowService, BaseService);
 
 /**
- * Select dropdowns from workflow form
- * @param {*} workflow details to be selected
- */
-WorkflowService.prototype.selectDropdowns = _.noop;
-
-/**
- * Fill workflow details into fields
- * @param {*} workflow to be created
- */
-WorkflowService.prototype.fillInTheFields = function(workflow) {
-  nwp.locators.workflowForm.self.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    nwp.commands.enterTitle(workflow.title);
-  });
-};
-
-/**
  * Clear specific fields on Workflow Form
  */
 WorkflowService.prototype.clearOtherFields = _.noop;
@@ -42,8 +25,8 @@ WorkflowService.prototype.clearOtherFields = _.noop;
  * @param {*} workflow to be searched
  */
 WorkflowService.prototype.searchForItem = function(workflow, count) {
-  return pageObject.main.commands.search(workflow.title).then(function() {
-    pageObject.main.commands.count().then(function(c) {
+  return mwp.commands.search(workflow.title).then(function() {
+    mwp.commands.count().then(function(c) {
       utils.expectResultIsEquelTo(c, count);
     });
   });

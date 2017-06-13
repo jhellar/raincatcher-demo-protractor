@@ -108,7 +108,7 @@ describe('Group E2E', function() {
     before('create ' + data.params.GROUP_TSEARCH + ' group', function() {
       groupService.create(data.groups.SEARCH);
     });
-    it('search field is visible and ' + data.params.GROUP_TSEARCH + 'is searched', function() {
+    it('search field is visible and ' + data.params.GROUP_TSEARCH + ' is searched', function() {
       searched = groupService.search(data.groups.SEARCH, 1);
     });
     it('check ' + data.params.GROUP_TSEARCH + ' group in list', function() {
@@ -118,9 +118,9 @@ describe('Group E2E', function() {
       groupService.expectElementDetailsNotEqualTo(searched, data.groups.DELETE);
     });
     it('search reset to list all groups', function() {
-      groupService.searchReset();
+      groupService.searchReset(); // TODO some check could be added
     });
-    it('remove ' + data.params.GROUP_TSEARCH + ' group', function() {
+    after('remove ' + data.params.GROUP_TSEARCH + ' group', function() {
       groupService.remove(data.groups.SEARCH);
     });
   });
@@ -129,22 +129,22 @@ describe('Group E2E', function() {
     before('create ' + data.params.GROUP_TADD + ' groups', function() {
       groupService.create(data.groups.ADD);
     });
-    it('create test worker', function() {
+    it('create ' + data.params.WORKER_TADD + ' worker', function() {
       workerService.create(data.workers.ADD);
     });
-    it('open test group', function() {
+    it('open '+ data.params.GROUP_TADD +' group', function() {
       groupService.open(data.groups.ADD);
     });
-    it('verify test worker is in list of test group', function() {
+    it('check '+ data.params.WORKER_TADD +' worker is in list of test group', function() {
       groupService.verifyWorkerInList(data.workers.ADD);
     });
-    it('remove test worker', function() {
+    it('remove '+ data.params.WORKER_TADD +' worker', function() {
       workerService.remove(data.workers.ADD);
     });
-    it('open test group', function() {
+    it('open '+ data.params.GROUP_TADD +' group', function() {
       groupService.open(data.groups.ADD);
     });
-    it('verify test worker is not in list of test group', function() {
+    it('check '+ data.params.WORKER_TADD +' worker is not in list of '+ data.params.GROUP_TADD +' group', function() {
       groupService.verifyWorkerNotInList(data.workers.ADD);
     });
     after('remove ' + data.params.GROUP_TADD + ' group', function() {

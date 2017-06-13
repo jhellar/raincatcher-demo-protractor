@@ -60,14 +60,8 @@ var MainGroupPage = function() {
     count: function() {
       return locators.groups.count();
     },
-    firstInTheList: function() {
+    first: function() {
       return locators.groups.first();
-    },
-    lastInTheList: function() {
-      return locators.groups.last();
-    },
-    firstClick: function() {
-      return locators.groups.first().click();
     },
     getName: function(elem) {
       return elem.element(locators.group.name).getText();

@@ -60,14 +60,8 @@ var MainWorkorderPage = function() {
     count: function() {
       return locators.workorders.count();
     },
-    firstInTheList: function() {
+    first: function() {
       return locators.workorders.first();
-    },
-    lastInTheList: function() {
-      return locators.workorders.last();
-    },
-    firstClick: function() {
-      return locators.workorders.first().click();
     },
     getTitle: function(elem) {
       return elem.element(locators.workorder.title).getText();

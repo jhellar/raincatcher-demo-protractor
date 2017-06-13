@@ -59,14 +59,8 @@ var MainWorkflowPage = function() {
     count: function() {
       return locators.workflows.count();
     },
-    firstInTheList: function() {
+    first: function() {
       return locators.workflows.first();
-    },
-    lastInTheList: function() {
-      return locators.workflows.last();
-    },
-    firstClick: function() {
-      return locators.workflows.first().click();
     },
     getTitle: function(elem) {
       return elem.element(locators.workflow.title).getText();

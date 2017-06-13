@@ -20,8 +20,8 @@ var workers = {
     group: 'Drivers'
   },
   UPDATE1: {
-    name: 'wrk-crudl-update-1',
-    username: 'wrk-crudl-update-1',
+    name: params.WORKER_TUPDATE1,
+    username: params.WORKER_TUPDATE1,
     password: '123',
     banner: 'http://' + params.WORKER_TUPDATE1 + '.banners.com',
     avatar: 'http://' + params.WORKER_TUPDATE1 + '.avatars.com',

@@ -17,40 +17,6 @@ function WorkorderService() {
 utils.inherit(WorkorderService, BaseService);
 
 /**
- * Select dropdowns from workorder form
- * @param {*} workorder details to be selected
- */
-WorkorderService.prototype.selectDropdowns = function(workorder) {
-  // TODO workorder type is default now
-  // expect($('#workorderType')).isPresent().eventually.to.be.true;
-  var workflow = element(by.xpath("//md-select-menu/md-content/md-option/div[contains(text(),'- " + workorder.workflow + "')]"));
-  var assignee = element(by.xpath("//md-select-menu/md-content/md-option/div[starts-with(text(),'" + workorder.assignee + "')]"));
-  var clickable = element(by.css('.md-select-menu-container.md-active'));
-
-  nwp.locators.workorderForm.dropdowns.workflow.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    nwp.locators.workorderForm.dropdowns.workflow.click();
-  }).then(function() {
-    return workflow.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    utils.waitUntilClickable(clickable);
-    workflow.click();
-  }).then(function() {
-    return nwp.locators.workorderForm.dropdowns.assignee.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    nwp.locators.workorderForm.dropdowns.assignee.click();
-  }).then(function() {
-    return assignee.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    utils.waitUntilClickable(clickable);
-    assignee.click();
-  });
-};
-
-/**
  * Fill workorder details into fields
  * @param {*} workorder to be created
  */

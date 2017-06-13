@@ -61,14 +61,8 @@ var MainWorkerPage = function() {
     count: function() {
       return locators.workers.count();
     },
-    firstInTheList: function() {
+    first: function() {
       return locators.workers.first();
-    },
-    lastInTheList: function() {
-      return locators.workers.last();
-    },
-    firstClick: function() {
-      return locators.workers.first().click();
     },
     getFullName: function(elem) {
       return elem.element(locators.worker.fullName).getText();

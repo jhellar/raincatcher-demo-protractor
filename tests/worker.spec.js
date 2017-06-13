@@ -112,8 +112,7 @@ describe('Worker E2E', function() {
       workerService.create(data.workers.SEARCH);
     });
     it('RAINCATCH-747: search field is visible and ' + data.params.WORKER_TSEARCH + 'is searched', function() {
-      searched = workerService.search(data.workers.SEARCH); // RAINCATCH-747 search input is not reloading
-      // other search mechanism is implemented for this test
+      searched = workerService.search(data.workers.SEARCH, 1);
     });
     it('check ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
       workerService.expectElementDetailsEqualTo(searched, data.workers.SEARCH);
@@ -122,7 +121,7 @@ describe('Worker E2E', function() {
       workerService.expectElementDetailsNotEqualTo(searched, data.workers.DELETE);
     });
     it('search reset to list all workers', function() {
-      workerService.searchReset();
+      workerService.searchReset(); // TODO some check could be added
     });
     after('remove ' + data.params.WORKER_TSEARCH + ' worker', function() {
       workerService.remove(data.workers.SEARCH);

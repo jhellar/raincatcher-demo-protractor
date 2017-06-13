@@ -40,7 +40,16 @@ var CreateGroupPage = function() {
     },
     enterRole: function(role) {
       locators.groupForm.dropdowns.role.sendKeys(role);
+    },
+    checkFinishTimeWarningMessage: function() {
+      return locators.groupForm.warnings.name.isPresent().then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.groupForm.warnings.name.getText().then(function(result) {
+          utils.expectResultIsEquelTo(result, consts.groups.NAME_MISSING_MSG); // TODO name message is required
+        });
+      });
     }
+
   };
 
   return {
