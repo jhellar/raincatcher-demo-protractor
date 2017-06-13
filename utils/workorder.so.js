@@ -17,33 +17,6 @@ function WorkorderService() {
 utils.inherit(WorkorderService, BaseService);
 
 /**
- * Fill workorder details into fields
- * @param {*} workorder to be created
- */
-WorkorderService.prototype.fillInTheFields = function(workorder) {
-  nwp.locators.workorderForm.self.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    nwp.commands.enterTitle(workorder.title);
-  }).then(function() {
-    nwp.commands.enterAddress(workorder.address);
-  }).then(function() {
-    nwp.commands.enterLatitute(workorder.latitude);
-  }).then(function() {
-    nwp.commands.enterLongitude(workorder.longitude);
-  }).then(function() {
-  //   nwp.commands.enterStartDate(workorder.startDate); // TODO
-  // }).then(function() {
-  //   nwp.commands.enterStartTime(workorder.startTime); // TODO
-  // }).then(function() {
-    nwp.commands.enterFinishDate(workorder.finishDate);
-  }).then(function() {
-    nwp.commands.enterFinishTime(workorder.finishTime);
-  }).then(function() {
-    nwp.commands.enterSummary(workorder.summary);
-  });
-};
-
-/**
  * Clear specific fields on Item Form
  */
 WorkorderService.prototype.clearOtherFields = function() {

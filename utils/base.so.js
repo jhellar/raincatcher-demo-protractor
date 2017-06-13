@@ -28,6 +28,10 @@ BaseService.prototype.create = function(item, dummyParams) {
       utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
     }
   }).then(function() {
+    if (!dummyParams && pageObject.new.locators.itemForm.datetime) {
+      utils.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
+    }
+  }).then(function() {
     if (!dummyParams) { // fill dropdowns
       utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
     }
