@@ -83,13 +83,20 @@ WorkflowService.prototype.expectElementDetails = function(promise, expected, exp
   });
 };
 
-WorkflowService.prototype.addStep = function(workflow, step) {
+WorkflowService.prototype.addStep = function(workflow, step, dummyParams) {
+  dummyParams = dummyParams || false;
   this.open(workflow).then(function() {
     return swp.locators.stepForm.self.isPresent();
   }).then(function(result) {
     utils.expectResultIsTrue(result);
   }).then(function() {
-    utils.sendKeysPromise(swp.locators.stepForm.fields, step);
+    if (!dummyParams && swp.locators.stepForm.dropdowns) {
+      // utils.sendKeysPromise(swp.locators.stepForm.dropdowns, step);
+    }
+  }).then(function() {
+    if (!dummyParams && swp.locators.stepForm.fields) {
+      utils.sendKeysPromise(swp.locators.stepForm.fields, step);
+    }
   }).then(function() {
     swp.locators.stepForm.buttons.add.click();
   });
@@ -130,6 +137,40 @@ WorkflowService.prototype.removeStep = function(workflow, toDelete) {
     el.element(by.css('md-card-actions>button[aria-label="Delete Step"')).click();
   }).then(function() {
     utils.pressButton(mwp.locators.proceedButton);
+  });
+};
+
+WorkflowService.prototype.expectStepWarningsPresent = function() {
+  var isPresent = function(x) {
+    return x.isPresent();
+  };
+  isPresent(swp.locators.stepForm.self).then(function(result) {
+    utils.expectResultIsTrue(result);
+    return utils.returnAllPromises(swp.locators.stepForm.warnings, isPresent);
+  }).then(function(results) {
+    utils.expectEachResultsIsTrue(results);
+  });
+};
+
+WorkflowService.prototype.expectStepDetailsToBe = function(workflow, expected) {
+  this.open(workflow).then(function() {
+    return swp.commands.getStepsDetails();
+  }).then(function(details) {
+    var idx = details.findIndex(function(step) {
+      return _.endsWith(step.h2, expected.name);
+    });
+    return {details, idx};
+  }).then(function(result) {
+    var stepCode = swp.commands.getStepCode(result.details, result.idx);
+    var viewTemplate = swp.commands.getViewTemplate(result.details, result.idx);
+    var formId = swp.commands.getFormId(result.details, result.idx);
+    var formTemplate = swp.commands.getFormTemplate(result.details, result.idx);
+    return {stepCode, viewTemplate, formId, formTemplate};
+  }).then(function(result) {
+    utils.expectResultIsEquelTo(result.stepCode.h3, expected.code);
+    utils.expectResultIsEquelTo(result.viewTemplate.h3, expected.view);
+    // utils.expectResultIsEquelTo(result.formId.h3, expected.formId);
+    utils.expectResultIsEquelTo(result.formTemplate.h3, expected.form);
   });
 };
 

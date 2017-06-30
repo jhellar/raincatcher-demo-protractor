@@ -6,22 +6,21 @@ var SelectedWorkflowPage = function() {
   var locators = {
 
     workflowHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
-    workflowSteps: element.all(by.repeater('step in wfdCtrl.workflow.steps')), // get all steps but not [Add Step]
+    workflowSteps: element.all(by.repeater('step in ctrl.workflow.steps')), // get all steps but not [Add Step]
 
     stepForm: {
       self: element(by.css(stepFormSelector)),
       fields: {
-        // formId: element(by.css(stepFormSelector + ' #formId')),
         code: element(by.css(stepFormSelector + ' #code')),
         name: element(by.css(stepFormSelector + ' #name')),
         form: element(by.css(stepFormSelector + ' #form')),
         view: element(by.css(stepFormSelector + ' #view')),
       },
       dropdowns: {
-        // no dropdowns in Step Form
+        formId: element(by.css(stepFormSelector + ' #formId')),
       },
       buttons: {
-        add: element(by.css(stepFormSelector + ' button[aria-label="Update step"]')), // BUG shoudl be Add step
+        add: element(by.css(stepFormSelector + ' button[aria-label="Add step"]')), // BUG shoudl be Add step
         update: element(by.css(stepFormSelector + ' button[aria-label="Update step"]')),
       },
       warnings: {
@@ -50,24 +49,30 @@ var SelectedWorkflowPage = function() {
           var p = listItem.element(by.css('div>p')).getText();
           return { icon, h3, p };
         });
-        return {h2, data};
+        return { h2, data };
       });
     },
-    getStepCode: function(details) {
-      var stepCode = details.find(function(it) {
-        return it.steps.p === 'Step code';
+    getStepCode: function(details, idx) {
+      var stepCode = details[idx].data.find(function(it) {
+        return it.p === 'Step code';
       });
       return stepCode;
     },
-    getViewTemplate: function(details) {
-      var viewTemplate = details.find(function(it) {
-        return it.steps.p === 'View Template';
+    getViewTemplate: function(details, idx) {
+      var viewTemplate = details[idx].data.find(function(it) {
+        return it.p === 'View template';
       });
       return viewTemplate;
     },
-    getFormTemplate: function(details) {
-      var formTemplate = details.find(function(it) {
-        return it.steps.p === 'Form template';
+    getFormId: function(details, idx) {
+      var formTemplate = details[idx].data.find(function(it) {
+        return it.p === 'FormId';
+      });
+      return formTemplate;
+    },
+    getFormTemplate: function(details, idx) {
+      var formTemplate = details[idx].data.find(function(it) {
+        return it.p === 'Form template';
       });
       return formTemplate;
     }
