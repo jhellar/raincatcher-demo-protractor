@@ -5,10 +5,10 @@ var expect = chai.expect;
 
 var filePage = require('../pages/file/file.po');
 var utils = require('../utils/utils');
-var fileCrudl = require('../utils/file.crudl');
+var fileCrudl = require('../services/file.so');
 
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Files E2E', function() {

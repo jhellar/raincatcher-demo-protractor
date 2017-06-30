@@ -1,5 +1,5 @@
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Portal and Client Authentication Testing', function() {

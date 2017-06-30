@@ -1,9 +1,9 @@
 var schedulerPage = require('../pages/scheduler.po');
 var navigationTab = require('../pages/navigation.po');
-var utils = require('./utils');
-var dateUtil = require('./date.utils');
-var constants = require('./constants');
-var AuthService = require('../utils/auth.so');
+var utils = require('../utils/utils');
+var dateUtil = require('../utils/date.utils');
+var constants = require('../utils/constants');
+var AuthService = require('./auth.so');
 var authService = new AuthService();
 
 /**

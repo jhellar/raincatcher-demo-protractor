@@ -9,7 +9,7 @@ var mwp = require('../pages/worker/main.po');
 var WorkerService = require('./worker.so');
 var workerService = new WorkerService();
 
-var utils = require('./utils');
+var utils = require('../utils/utils');
 var _ = require('lodash');
 
 /**

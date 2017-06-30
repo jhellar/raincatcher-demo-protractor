@@ -1,8 +1,8 @@
-var schedulerCrudl = require('../utils/scheduler.crudl');
+var schedulerCrudl = require('../services/scheduler.so');
 var dateUtil = require('../utils/date.utils');
 var data = require('../data/scheduler.do');
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('testing scheduler functionality in demo app', function() {

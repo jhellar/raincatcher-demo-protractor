@@ -1,8 +1,8 @@
 var data = require('../data/messages.do');
-var messagesCrudl = require('../utils/messages.crudl');
+var messagesCrudl = require('../services/messages.so');
 var newMessagePage = require('../pages/messages/newMessagePage.po');
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('testing messages functionality in demo app', function() {

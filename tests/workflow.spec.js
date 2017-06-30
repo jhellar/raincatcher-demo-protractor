@@ -1,10 +1,10 @@
-var WorkflowService = require('../utils/workflow.so');
+var WorkflowService = require('../services/workflow.so');
 var workflowService = new WorkflowService();
 
 var data = require('../data/workflows.do');
 
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Workflow E2E', function() {

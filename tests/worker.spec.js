@@ -1,10 +1,10 @@
-var WorkerService = require('../utils/worker.so');
+var WorkerService = require('../services/worker.so');
 var workerService = new WorkerService();
 
 var data = require('../data/workers.do');
 
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Worker E2E', function() {

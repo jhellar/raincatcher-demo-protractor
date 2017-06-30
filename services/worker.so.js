@@ -11,7 +11,7 @@ var mwp = pageObject.main;
 var swp = pageObject.selected;
 
 var utils = require('../utils/utils');
-var BaseService = require('../utils/base.so');
+var BaseService = require('./base.so');
 
 var _ = require('lodash');
 

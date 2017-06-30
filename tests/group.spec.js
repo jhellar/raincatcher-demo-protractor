@@ -1,13 +1,13 @@
-var GroupService = require('../utils/group.so');
+var GroupService = require('../services/group.so');
 var groupService = new GroupService();
 
-var WorkerService = require('../utils/worker.so');
+var WorkerService = require('../services/worker.so');
 var workerService = new WorkerService();
 
 var data = require('../data/groups.do');
 
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Group E2E', function() {

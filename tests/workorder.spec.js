@@ -1,16 +1,16 @@
-var WorkorderService = require('../utils/workorder.so');
+var WorkorderService = require('../services/workorder.so');
 var workorderService = new WorkorderService();
 
-var WorkerService = require('../utils/worker.so');
+var WorkerService = require('../services/worker.so');
 var workerService = new WorkerService();
 
-var WorkflowService = require('../utils/workflow.so');
+var WorkflowService = require('../services/workflow.so');
 var workflowService = new WorkflowService();
 
 var data = require('../data/workorders.do');
 
 var constants = require('../utils/constants');
-var AuthService = require('../utils/auth.so');
+var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
 describe('Workorder E2E', function() {
