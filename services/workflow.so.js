@@ -144,14 +144,13 @@ WorkflowService.prototype.expectStepDetailsToBe = function(workflow, expected) {
   })
   .then((result) => {
     var stepCode = swp.commands.getStepCode(result.details, result.idx);
-    utils.expectResultIsEquelTo(result.stepCode.h3, expected.code);
+    utils.expectResultIsEquelTo(stepCode.h3, expected.code);
     var viewTemplate = swp.commands.getViewTemplate(result.details, result.idx);
-    utils.expectResultIsEquelTo(result.viewTemplate.h3, expected.view);
-    var formId = swp.commands.getFormId(result.details, result.idx);
-    // utils.expectResultIsEquelTo(result.formId.h3, expected.formId);
+    utils.expectResultIsEquelTo(viewTemplate.h3, expected.view);
+    // var formId = swp.commands.getFormId(result.details, result.idx); // TODO
+    // utils.expectResultIsEquelTo(formId.h3, expected.formId);
     var formTemplate = swp.commands.getFormTemplate(result.details, result.idx);
-    utils.expectResultIsEquelTo(result.formTemplate.h3, expected.form);
-    return {stepCode, viewTemplate, formId, formTemplate};
+    utils.expectResultIsEquelTo(formTemplate.h3, expected.form);
   });
 };
 
