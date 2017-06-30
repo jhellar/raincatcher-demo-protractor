@@ -1,9 +1,3 @@
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
-
 var pageObject = require('../pages/worker');
 
 var nwp = pageObject.new;
@@ -33,29 +27,25 @@ WorkerService.prototype.clearOtherFields = _.noop;
  * @param {*} worker to be searched
  */
 WorkerService.prototype.searchForItem = function(worker, count) {
-  return mwp.commands.search(worker.name).then(function() {
-    mwp.commands.count().then(function(c) {
-      utils.expectResultIsEquelTo(c, count);
-    });
-  });
+  return mwp.commands.search(worker.name)
+  .then(() => mwp.commands.count())
+  .then((c) => utils.expectResultIsEquelTo(c, count));
 };
 
 /**
  * Check if all fields of Worker Form are present
  */
 WorkerService.prototype.expectFieldsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
-  isPresent(nwp.locators.workerForm.self).then(function(result) {
+  return nwp.locators.workerForm.self.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.workerForm.fields, isPresent);
-  }).then(function(results) { // fields present
+    return utils.returnAllPromises(nwp.locators.workerForm.fields, x => x.isPresent());
+  })
+  .then((results) => { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.workerForm.dropdowns, isPresent);
-  }).then(function(results) { // dropdowns present
-    utils.expectEachResultsIsTrue(results);
-  });
+    return utils.returnAllPromises(nwp.locators.workerForm.dropdowns, x => x.isPresent());
+  })
+  .then((results) => utils.expectEachResultsIsTrue(results)); // dropdowns present
 };
 
 /**
@@ -63,8 +53,8 @@ WorkerService.prototype.expectFieldsPresent = function() {
  * @param {*} worker to be compared to
  */
 WorkerService.prototype.expectDetailsToBe = function(worker) {
-  swp.commands.getDetails()
-  .then(function(details) {
+  return swp.commands.getDetails()
+  .then((details) => {
     var username = swp.commands.getUsername(details);
     utils.expectResultIsEquelTo(username.h3, worker.username);
     var phoneNumber = swp.commands.getPhoneNumber(details);
@@ -83,26 +73,26 @@ WorkerService.prototype.expectDetailsToBe = function(worker) {
 };
 
 WorkerService.prototype.expectElementInfo = function(worker) {
-  swp.locators.workerHeader.isPresent().then(function(result) {
+  return swp.locators.workerHeader.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
     return swp.locators.workerHeader.getText();
-  }).then(function(result) {
-    utils.expectResultIsEquelTo(result, 'Worker : ' + worker.name);
-  });
+  })
+  .then((result) => utils.expectResultIsEquelTo(result, 'Worker : ' + worker.name));
 };
 
 WorkerService.prototype.expectElementDetails = function(promise, expected, expectFunc) {
-  promise.then(function(elem) {
-    mwp.commands.getFullName(elem).then(function(result) {
-      expectFunc(result, expected.name);
-    });
-    mwp.commands.getPosition(elem).then(function(result) {
-      expectFunc(result, expected.position);
-    });
+  return promise.then((elem) => {
+    return Promise.all([
+      mwp.commands.getFullName(elem)
+      .then((result) => expectFunc(result, expected.name)),
+      mwp.commands.getPosition(elem)
+      .then((result) => expectFunc(result, expected.position))
+    ]);
   });
 };
 
-WorkerService.prototype.verifyWorkorderInList = function(worker, workorder) {
+WorkerService.prototype.verifyWorkorderInList = function(worker, workorder) { // TODO replace with protractor
   this.open(worker);
   swp.commands.openWorkordersPage();
   expect(
@@ -113,7 +103,7 @@ WorkerService.prototype.verifyWorkorderInList = function(worker, workorder) {
     .eventually.to.be.true;
 };
 
-WorkerService.prototype.verifyWorkorderNotInList = function(worker, workorder) {
+WorkerService.prototype.verifyWorkorderNotInList = function(worker, workorder) { // TODO replace with protractor
   this.open(worker);
   swp.commands.openWorkordersPage();
   expect(

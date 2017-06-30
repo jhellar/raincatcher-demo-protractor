@@ -25,29 +25,25 @@ GroupService.prototype.clearOtherFields = _.noop;
  * @param {*} group to be searched
  */
 GroupService.prototype.searchForItem = function(group, count) {
-  return mgp.commands.search(group.name).then(function() {
-    mgp.commands.count().then(function(c) {
-      utils.expectResultIsEquelTo(c, count);
-    });
-  });
+  return mgp.commands.search(group.name)
+    .then(() => mgp.commands.count())
+    .then((c) => utils.expectResultIsEquelTo(c, count));
 };
 
 /**
  * Check if all fields of Group Form are present
  */
 GroupService.prototype.expectFieldsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
-  isPresent(ngp.locators.groupForm.self).then(function(result) {
+  ngp.locators.groupForm.self.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(ngp.locators.groupForm.fields, isPresent);
-  }).then(function(results) { // fields present
+    return utils.returnAllPromises(ngp.locators.groupForm.fields, x => x.isPresent());
+  })
+  .then((results) => { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(ngp.locators.groupForm.dropdowns, isPresent);
-  }).then(function(results) { // dropdowns present
-    utils.expectEachResultsIsTrue(results);
-  });
+    return utils.returnAllPromises(ngp.locators.groupForm.dropdowns, x => x.isPresent());
+  })
+  .then((results) => utils.expectEachResultsIsTrue(results)); // dropdowns present
 };
 
 /**
@@ -56,7 +52,7 @@ GroupService.prototype.expectFieldsPresent = function() {
  */
 GroupService.prototype.expectDetailsToBe = function(group) {
   sgp.commands.getDetails()
-  .then(function(details) {
+  .then((details) => {
     var name = sgp.commands.getName(details);
     utils.expectResultIsEquelTo(name.h3, group.name);
     var role = sgp.commands.getRole(details);
@@ -69,23 +65,23 @@ GroupService.prototype.expectDetailsToBe = function(group) {
 };
 
 GroupService.prototype.expectElementInfo = function(group) {
-  sgp.locators.groupHeader.isPresent().then(function(result) {
+  sgp.locators.groupHeader.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
     return sgp.locators.groupHeader.getText();
-  }).then(function(result) {
-    utils.expectResultIsEquelTo(result, group.name + ' Group');
-  });
+  })
+  .then((result) => utils.expectResultIsEquelTo(result, group.name + ' Group'));
 };
 
 GroupService.prototype.expectElementDetails = function(promise, expected, expectFunc) {
-  promise.then(function(elem) {
-    mgp.commands.getName(elem).then(function(result) {
-      expectFunc(result, expected.name);
-    });
+  return promise
+  .then((elem) => mgp.commands.getName(elem))
+  .then(function(result) {
+    expectFunc(result, expected.name);
   });
 };
 
-GroupService.prototype.verifyWorkerInList = function(params) {
+GroupService.prototype.verifyWorkerInList = function(params) { // TODO replace with protractor
   expect(
     element(by.xpath('//group/md-toolbar/div/h3[contains(text(),"Members")]')).isPresent())
     .eventually.to.be.true;
@@ -97,7 +93,7 @@ GroupService.prototype.verifyWorkerInList = function(params) {
     .eventually.to.be.true;
 };
 
-GroupService.prototype.verifyWorkerNotInList = function(params) {
+GroupService.prototype.verifyWorkerNotInList = function(params) { // TODO replace with protractor
   expect(
     element(by.xpath('//group/md-toolbar/div/h3[contains(text(),"Members")]')).isPresent())
     .eventually.to.be.true;

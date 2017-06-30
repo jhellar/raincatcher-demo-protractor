@@ -18,27 +18,28 @@ BaseService.prototype.create = function(item, dummyParams) {
   var pageObject = this.pageObject;
   dummyParams = dummyParams || false;
 
-  pageObject.main.commands.sideClick().then(function() {
-    utils.pressButton(pageObject.main.locators.newButton);
-  }).then(function() {
-    pageObject.new.commands.selfCheck();
-    self.expectFieldsPresent();
-  }).then(function() {
+  pageObject.main.commands.sideClick()
+  .then(() => utils.pressButton(pageObject.main.locators.newButton))
+  .then(() => pageObject.new.commands.selfCheck())
+  .then(() => self.expectFieldsPresent())
+  .then( ()  => {
     if (!dummyParams && pageObject.new.locators.itemForm.dropdowns) {
       utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
     }
-  }).then(function() {
+  })
+  .then(() => {
     if (!dummyParams && pageObject.new.locators.itemForm.datetime) {
       utils.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
     }
-  }).then(function() {
+  })
+  .then(() => {
     if (!dummyParams) { // fill dropdowns
       utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
     }
-  }).then(function() {
-    utils.pressButton(pageObject.new.locators.itemForm.buttons.create);
-  }).then(function() { // fill fields
-    if (!dummyParams) { // TODO RAINCATCH-641
+  })
+  .then(() => utils.pressButton(pageObject.new.locators.itemForm.buttons.create))
+  .then(() => {
+    if (!dummyParams) {
       self.expectElementInfo(item);
     }
   });
@@ -53,19 +54,16 @@ BaseService.prototype.update = function(toUpdate, updatee) {
   var self = this;
   var pageObject = this.pageObject;
 
-  return self.open(toUpdate).then(function() {
-    utils.pressButton(pageObject.main.locators.editButton);
-  }).then(function() {
-    self.clearAllFields();
-  }).then(function() { // fill dropdowns
-    if (pageObject.new.locators.itemForm.dropdowns) {
+  return self.open(toUpdate)
+  .then(() => utils.pressButton(pageObject.main.locators.editButton))
+  .then(() => self.clearAllFields())
+  .then(() => {
+    if (pageObject.new.locators.itemForm.dropdowns) { // fill dropdowns
       utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
     }
-  }).then(function() { // fill fields
-    utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee);
-  }).then(function() {
-    utils.pressButton(pageObject.new.locators.itemForm.buttons.update);
-  });
+  })
+  .then(() => utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee)) // fill fields
+  .then(() => utils.pressButton(pageObject.new.locators.itemForm.buttons.update));
 };
 
 /**
@@ -73,10 +71,8 @@ BaseService.prototype.update = function(toUpdate, updatee) {
  * @param {*} item to be openned
  */
 BaseService.prototype.open = function(item) {
-  var promise = this.search(item, 1);
-  return promise.then(function(found) {
-    found.click();
-  });
+  return this.search(item, 1)
+    .then((found) => found.click());
 };
 
 /**
@@ -85,22 +81,19 @@ BaseService.prototype.open = function(item) {
  */
 BaseService.prototype.remove = function(item) {
   var pageObject = this.pageObject;
-  this.open(item).then(function() {
-    return pageObject.main.locators.deleteButton.isPresent();
-  }).then(function(result) {
+  this.open(item)
+  .then(() => pageObject.main.locators.deleteButton.isPresent())
+  .then((result) => {
     utils.expectResultIsTrue(result);
     return pageObject.main.locators.deleteButton.click();
-  }).then(function() {
-    return pageObject.main.locators.proceedButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    pageObject.main.locators.proceedButton.click();
-  }).then(function() {
-    return pageObject.main.locators.proceedButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsFalse(result);
-  });
+  })
+  .then(() => pageObject.main.locators.proceedButton.isPresent())
+  .then((result) => utils.expectResultIsTrue(result))
+  .then(() => pageObject.main.locators.proceedButton.click())
+  .then(() => pageObject.main.locators.proceedButton.isPresent())
+  .then((result) => utils.expectResultIsFalse(result));
 };
+
 //################################################################################
 //                                SEARCH FUNCTIONS
 //################################################################################
@@ -113,23 +106,19 @@ BaseService.prototype.search = function(item, count) {
   var self = this;
   var pageObject = this.pageObject;
 
-  return pageObject.main.commands.sideClick().then(function() {
-    return pageObject.main.commands.selfCheck();
-  }).then(function() {
-    self.searchForItem(item, count);
-  }).then(function() {
-    return pageObject.main.commands.first();
-  });
+  return pageObject.main.commands.sideClick()
+  .then(() => pageObject.main.commands.selfCheck())
+  .then(() => self.searchForItem(item, count))
+  .then(() => pageObject.main.commands.first());
 };
 
 BaseService.prototype.searchReset = function() {
   var pageObject = this.pageObject;
-  return pageObject.main.commands.sideClick().then(function() {
-    return pageObject.main.commands.selfCheck();
-  }).then(function() {
-    pageObject.main.locators.search.clear();
-  });
+  return pageObject.main.commands.sideClick()
+  .then(() => pageObject.main.commands.selfCheck())
+  .then(() => pageObject.main.locators.search.clear());
 };
+
 //################################################################################
 //                                FIELDS FUNCTIONS
 //################################################################################
@@ -138,19 +127,16 @@ BaseService.prototype.searchReset = function() {
  */
 BaseService.prototype.clearAllFields = function() {
   var self = this;
-  var clear = function(x) {
-    return x.clear();
-  };
   var pageObject = this.pageObject;
-  pageObject.new.locators.itemForm.self.isPresent().then(function(result) {
+  pageObject.new.locators.itemForm.self.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(pageObject.new.locators.itemForm.fields, clear);
-  }).then(function(results) { // clear fields
-    utils.expectEachResultsIsNull(results);
-  }).then(function() { // clear date and time
-    self.clearOtherFields();
-  });
+    return utils.returnAllPromises(pageObject.new.locators.itemForm.fields, x => x.clear());
+  })
+  .then((results) => utils.expectEachResultsIsNull(results)) // clear fields
+  .then(() => self.clearOtherFields()); // clear date and time
 };
+
 //################################################################################
 //                                EXPECT FUNCTIONS
 //################################################################################
@@ -158,16 +144,13 @@ BaseService.prototype.clearAllFields = function() {
  * Check all warnings of item Form are present
  */
 BaseService.prototype.expectWarningsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
   var pageObject = this.pageObject;
-  isPresent(pageObject.new.locators.itemForm.self).then(function(result) {
+  pageObject.new.locators.itemForm.self.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(pageObject.new.locators.itemForm.warnings, isPresent);
-  }).then(function(results) {
-    utils.expectEachResultsIsTrue(results);
-  });
+    return utils.returnAllPromises(pageObject.new.locators.itemForm.warnings, x => x.isPresent());
+  })
+  .then((results) => utils.expectEachResultsIsTrue(results));  
 };
 
 /**
@@ -176,7 +159,7 @@ BaseService.prototype.expectWarningsPresent = function() {
  * @param {*} expected item details to match
  */
 BaseService.prototype.expectElementDetailsEqualTo = function(promise, expected) {
-  this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
 };
 
 /**
@@ -185,7 +168,7 @@ BaseService.prototype.expectElementDetailsEqualTo = function(promise, expected) 
  * @param {*} expected item details to match
  */
 BaseService.prototype.expectElementDetailsNotEqualTo = function(promise, expected) {
-  this.expectElementDetails(promise, expected, utils.expectResultIsNotEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expectResultIsNotEquelTo);
 };
 
 /**
@@ -194,7 +177,7 @@ BaseService.prototype.expectElementDetailsNotEqualTo = function(promise, expecte
  */
 BaseService.prototype.expectToBeInList = function(expected) {
   var promise = this.search(expected, 1);
-  this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
 };
 
 /**
@@ -202,12 +185,9 @@ BaseService.prototype.expectToBeInList = function(expected) {
  * @param {*} item
  */
 BaseService.prototype.expectNotInTheList = function(expected) {
-  var promise = this.search(expected, 0);
-  promise.then(function(found) {
-    return found.isPresent();
-  }).then(function(present) {
-    utils.expectResultIsFalse(present);
-  });
+  return this.search(expected, 0)
+    .then((found) => found.isPresent())
+    .then((present) => utils.expectResultIsFalse(present));
 };
 
 //################################################################################
@@ -219,14 +199,13 @@ BaseService.prototype.expectNotInTheList = function(expected) {
  */
 BaseService.prototype.pressDeleteButton = function() {
   var pageObject = this.pageObject;
-  return pageObject.main.locators.deleteButton.isPresent().then(function(result) {
+  return pageObject.main.locators.deleteButton.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
     pageObject.main.locators.deleteButton.click();
-  }).then(function() {
-    return pageObject.main.locators.deleteButton.isPresent();
-  }).then(function(/*result*/) { // BUG delete button should not be visible
-    // utils.expectResultIsFalse(result);
-  });
+  })
+  .then(() => pageObject.main.locators.deleteButton.isPresent());
+  // .then((result) => utils.expectResultIsFalse(result));
 };
 
 /**
@@ -234,7 +213,7 @@ BaseService.prototype.pressDeleteButton = function() {
  */
 BaseService.prototype.pressCancelButton = function() {
   var pageObject = this.pageObject;
-  utils.pressButton(pageObject.main.locators.cancelButton);
+  return utils.pressButton(pageObject.main.locators.cancelButton);
 };
 
 /**
@@ -242,7 +221,7 @@ BaseService.prototype.pressCancelButton = function() {
  */
 BaseService.prototype.pressNewButton = function() {
   var pageObject = this.pageObject;
-  utils.pressButton(pageObject.main.locators.newButton);
+  return utils.pressButton(pageObject.main.locators.newButton);
 };
 
 /**
@@ -250,7 +229,7 @@ BaseService.prototype.pressNewButton = function() {
  */
 BaseService.prototype.pressNewCancelButton = function() {
   var pageObject = this.pageObject;
-  utils.pressButton(pageObject.new.locators.itemForm.buttons.cancel);
+  return utils.pressButton(pageObject.new.locators.itemForm.buttons.cancel);
 };
 
 /**
@@ -258,7 +237,7 @@ BaseService.prototype.pressNewCancelButton = function() {
  */
 BaseService.prototype.pressEditButton = function() {
   var pageObject = this.pageObject;
-  utils.pressButton(pageObject.main.locators.editButton);
+  return utils.pressButton(pageObject.main.locators.editButton);
 };
 
 /**
@@ -266,9 +245,8 @@ BaseService.prototype.pressEditButton = function() {
  */
 BaseService.prototype.expectNewButtonIsPresent = function() {
   var pageObject = this.pageObject;
-  return pageObject.main.locators.newButton.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-  });
+  return pageObject.main.locators.newButton.isPresent()
+    .then((result) => utils.expectResultIsTrue(result));
 };
 
 //################################################################################

@@ -20,10 +20,12 @@ utils.inherit(WorkorderService, BaseService);
  * Clear specific fields on Item Form
  */
 WorkorderService.prototype.clearOtherFields = function() {
-  // nwp.commands.clearStartDate(); // TODO
-  // nwp.commands.clearStartTime(); // TODO
-  nwp.commands.clearFinishDate();
-  nwp.commands.clearFinishTime();
+  return Promise.all([
+    // nwp.commands.clearStartDate(), // TODO
+    // nwp.commands.clearStartTime(), // TODO
+    nwp.commands.clearFinishDate(),
+    nwp.commands.clearFinishTime()
+  ]);
 };
 
 /**
@@ -31,33 +33,29 @@ WorkorderService.prototype.clearOtherFields = function() {
  * @param {*} workorder to be searched
  */
 WorkorderService.prototype.searchForItem = function(workorder, count) {
-  return pageObject.main.commands.search(workorder.title).then(function() {
-    pageObject.main.commands.count().then(function(c) {
-      utils.expectResultIsEquelTo(c, count);
-    });
-  });
+  return pageObject.main.commands.search(workorder.title)
+  .then(() => pageObject.main.commands.count())
+  .then((c) => utils.expectResultIsEquelTo(c, count));
 };
 
 /**
  * Check if all fields of Workorder Form are present
  */
 WorkorderService.prototype.expectFieldsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
-  // var pageObject = this.pageObject;
-  isPresent(nwp.locators.workorderForm.self).then(function(result) {
+  return nwp.locators.workorderForm.self.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.workorderForm.fields, isPresent);
-  }).then(function(results) { // fields present
+    return utils.returnAllPromises(nwp.locators.workorderForm.fields, x => x.isPresent());
+  })
+  .then((results) => { // fields present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.workorderForm.dropdowns, isPresent);
-  }).then(function(results) { // dropdowns present
+    return utils.returnAllPromises(nwp.locators.workorderForm.dropdowns, x => x.isPresent());
+  })
+  .then((results) => { // dropdowns present
     utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.workorderForm.datetime, isPresent);
-  }).then(function(results) { // date and time present
-    utils.expectEachResultsIsTrue(results);
-  });
+    return utils.returnAllPromises(nwp.locators.workorderForm.datetime, x => x.isPresent());
+  })
+  .then((results) => utils.expectEachResultsIsTrue(results));
 };
 
 /**
@@ -65,8 +63,8 @@ WorkorderService.prototype.expectFieldsPresent = function() {
  * @param {*} workorder to be compared to
  */
 WorkorderService.prototype.expectDetailsToBe = function(workorder) {
-  swp.commands.getDetails()
-  .then(function(details) {
+  return swp.commands.getDetails()
+  .then((details) => {
     var status = swp.commands.getStatus(details);
     utils.expectResultIsEquelTo(status.h3, workorder.status);
     var coordinates = swp.commands.getCoordinates(details, workorder.address);
@@ -79,35 +77,34 @@ WorkorderService.prototype.expectDetailsToBe = function(workorder) {
     utils.expectResultIsEquelTo(finishTime.h3.substring(0, 5), workorder.finishTime.substring(0, 5));
     var assignee = swp.commands.getAssignee(details);
     utils.expectResultIsEquelTo(assignee.h3, workorder.assignee);
-    swp.commands.getWorkSummary()
-    .then(function(summary) {
-      utils.expectResultIsEquelTo(summary, workorder.summary);
-    });
-    swp.commands.getWorkflow()
-    .then(function(workflow) {
-      utils.expectResultIsEquelTo(workflow, 'Workflow: ' + workorder.workflow);
-    });
+    return Promise.all([
+      swp.commands.getWorkSummary()
+      .then((summary) => utils.expectResultIsEquelTo(summary, workorder.summary)),
+      swp.commands.getWorkflow()
+      .then((workflow) => utils.expectResultIsEquelTo(workflow, 'Workflow: ' + workorder.workflow))
+    ]);
   });
 };
 
 WorkorderService.prototype.expectElementInfo = function(workorder) {
-  swp.locators.workorderHeader.isPresent().then(function(result) {
+  return swp.locators.workorderHeader.isPresent()
+  .then((result) => {
     utils.expectResultIsTrue(result);
     return swp.locators.workorderHeader.getText();
-  }).then(function(result) {
-    utils.expectResultIsEquelTo(result, 'Work order : ' + workorder.title);
-  });
+  })
+  .then((result) => utils.expectResultIsEquelTo(result, 'Work order : ' + workorder.title));
 };
 
 WorkorderService.prototype.expectElementDetails = function(promise, expected, expectFunc) {
   expectFunc = expectFunc || _.noop;
-  promise.then(function(elem) {
-    mwp.commands.getTitle(elem).then(function(result) {
-      expectFunc(result, expected.title);
-    });
-    mwp.commands.getAddress(elem).then(function(result) {
-      expectFunc(result, expected.address);
-    });
+  return promise
+  .then((elem) => {
+    return Promise.all([
+      mwp.commands.getTitle(elem)
+      .then((result) => expectFunc(result, expected.title)),
+      mwp.commands.getAddress(elem)
+      .then((result) => expectFunc(result, expected.address))
+    ]);
   });
 };
 
