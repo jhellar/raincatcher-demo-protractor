@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var LogoutPage = function() {
   var locators = {
@@ -9,13 +9,13 @@ var LogoutPage = function() {
   var commands = {
     selfCheck: function() {
       return browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.logout.URL);
+        utils.expect.resultIsEquelTo(result, consts.logout.URL);
         return locators.logoutButton.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.infoMessage.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     logout: function() {

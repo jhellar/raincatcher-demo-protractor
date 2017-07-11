@@ -4,7 +4,7 @@ chai.use(chaiAsPromised);
 var expect = chai.expect;
 
 var filePage = require('../pages/file/file.po');
-var utils = require('../utils/utils');
+var utils = require('../utils');
 var fileCrudl = require('../services/file.so');
 
 var constants = require('../utils/constants');
@@ -21,7 +21,7 @@ describe('Files E2E', function() {
 
   describe('FILES NAVIGATION', function() {
     it('should be able to navigate to the files section', function() {
-      utils.navigateToSection(filePage.locators.filesMenuButton);
+      utils.ui.navigateToSection(filePage.locators.filesMenuButton);
       expect(filePage.locators.header.isPresent()).eventually.to.be.true;
       expect(filePage.locators.header.getText()).eventually.to.equal('Files');
       expect(filePage.locators.emptyContent.isPresent()).eventually.to.be.true;
@@ -48,13 +48,13 @@ describe('Files E2E', function() {
     var fileListContainer = filePage.locators.fileListContainer;
 
     it('should display an empty list if no files are available', function() {
-      utils.checkListSize(fileListContainer.all(by.xpath("./*")), 0);
+      utils.check.listSize(fileListContainer.all(by.xpath("./*")), 0);
     });
 
     it('should display a list of files available', function() {
       fileCrudl.create();
       authService.navigateToPortalLogoutPage();
-      utils.navigateToSection(filePage.locators.filesMenuButton);
+      utils.ui.navigateToSection(filePage.locators.filesMenuButton);
       var fileListLength = fileListContainer.all(by.xpath("./*")).count();
       expect(fileListLength).eventually.to.be.above(0);
     });
@@ -79,7 +79,7 @@ describe('Files E2E', function() {
 
   describe('CANCEL', function() {
     it('should exit the file details when the close button is clicked', function() {
-      utils.navigateToSection(filePage.locators.filesMenuButton);
+      utils.ui.navigateToSection(filePage.locators.filesMenuButton);
       filePage.commands.getFile(0).click();
       expect(filePage.locators.fileDetail.container.isPresent()).eventually.to.be.true;
 
@@ -110,14 +110,14 @@ describe('Files E2E', function() {
 
     it('should be able to search for a file', function() {
       expect(filePage.locators.searchBar.sendKeys('photo'));
-      utils.checkListSize(fileListContainer.all(by.xpath("./*")), 1);
-      utils.checkValuesAreCorrect(fileListContainer.all(by.xpath("./*")), 'photo.png');
+      utils.check.listSize(fileListContainer.all(by.xpath("./*")), 1);
+      utils.check.valuesAreCorrect(fileListContainer.all(by.xpath("./*")), 'photo.png');
       expect(filePage.locators.searchBar.clear());
     });
 
     it('should return an empty list if file searched does not exist', function() {
       expect(filePage.locators.searchBar.sendKeys('testFile'));
-      utils.checkListSize(fileListContainer.all(by.xpath("./*")), 0);
+      utils.check.listSize(fileListContainer.all(by.xpath("./*")), 0);
       expect(filePage.locators.searchBar.clear());
     });
   });

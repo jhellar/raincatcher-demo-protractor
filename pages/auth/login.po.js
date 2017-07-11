@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var LoginPage = function() {
 
@@ -26,16 +26,16 @@ var LoginPage = function() {
     },
     selfCheck: function() {
       return browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.login.URL);
+        utils.expect.resultIsEquelTo(result, consts.login.URL);
         return locators.fields.usernameField.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.fields.passwordField.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.logoutButton.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     clickLoginButton: function() {
@@ -49,25 +49,25 @@ var LoginPage = function() {
     },
     checkIncorrectDetailsMessage: function() {
       return locators.warnings.incorrectDetailsMessage.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.warnings.incorrectDetailsMessage.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.login.AUTH_FAIL_MSG);
+          utils.expect.resultIsEquelTo(result, consts.login.AUTH_FAIL_MSG);
         });
       });
     },
     checkUsernameWarningMessage: function() {
       return locators.warnings.usernameWarningMessage.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.warnings.usernameWarningMessage.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.login.USERNAME_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.login.USERNAME_MISSING_MSG);
         });
       });
     },
     checkPasswordWarningMessage: function() {
       return locators.warnings.passwordWarningMessage.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.warnings.passwordWarningMessage.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.login.PASSWORD_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.login.PASSWORD_MISSING_MSG);
         });
       });
     }

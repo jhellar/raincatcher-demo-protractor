@@ -1,8 +1,4 @@
-// var chai = require('chai');
-// var chaiAsPromised = require('chai-as-promised');
-// chai.use(chaiAsPromised);
-//var expect = chai.expect;
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var DefaultMessagesPage = function() {
   var locators = {
@@ -15,14 +11,14 @@ var DefaultMessagesPage = function() {
 
   var commands = {
     checkVisibility: function() {
-      utils.waitUntilPresent(locators.emptyMessageHeading);
-      utils.checkElementsArePresent([locators.emptyMessageBody,
+      utils.wait.until(locators.emptyMessageHeading);
+      utils.check.elementsArePresent([locators.emptyMessageBody,
         locators.newMessageButton]);
     },
     checkValues: function() {
       var elementlocators = [ locators.emptyMessageHeading, locators.emptyMessageBody ];
       var expectedValues = [ locators.defaultHeading, locators.defaultBody ];
-      utils.checkValuesAreCorrect(elementlocators, expectedValues);
+      utils.check.valuesAreCorrect(elementlocators, expectedValues);
     },
     newMessage: function() {
       locators.newMessageButton.click();

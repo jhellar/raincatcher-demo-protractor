@@ -1,4 +1,4 @@
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var SelectedGroupPage = function() {
 
@@ -10,10 +10,10 @@ var SelectedGroupPage = function() {
   var commands = {
     selfCheck: function(header) {
       return locators.groupHeader.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.groupHeader.getText();
       }).then(function(result) {
-        utils.expectResultIsNotEquelTo(result, header);
+        utils.expect.resultIsNotEquelTo(result, header);
       });
     },
     getDetails: function() {

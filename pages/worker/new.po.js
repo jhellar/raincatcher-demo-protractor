@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var NewWorkerPage = function() {
   var workerFormSelector = 'form[name="workerForm"]';
@@ -41,10 +41,10 @@ var NewWorkerPage = function() {
     },
     selfCheck: function() {
       browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workers.URL_NEW);
+        utils.expect.resultIsEquelTo(result, consts.workers.URL_NEW);
         return locators.workerForm.self.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     // enter data into page fields
@@ -74,58 +74,58 @@ var NewWorkerPage = function() {
     },
     changePassword: function(password) {
       locators.workerForm.self.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.fields.password.clear();
       }).then(function(result) {
-        utils.expectResultIsNull(result);
+        utils.expect.resultIsNull(result);
         locators.workerForm.fields.password.sendKeys(password);
       });
     },
     checkNameWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.NAME_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.NAME_MISSING_MSG);
         });
       });
     },
     checkUsernameWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.USERNAME_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.USERNAME_MISSING_MSG);
         });
       });
     },
     checkPhoneNumberWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.PHONE_NUMBER_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.PHONE_NUMBER_MISSING_MSG);
         });
       });
     },
     checkEmailWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.EMAIL_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.EMAIL_MISSING_MSG);
         });
       });
     },
     checkPositionWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.POSITION_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.POSITION_MISSING_MSG);
         });
       });
     },
     checkGroupWarningMessage: function() {
       return locators.workerForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workers.GROUP_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workers.GROUP_MISSING_MSG);
         });
       });
     }

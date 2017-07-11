@@ -4,7 +4,7 @@ var nwp = pageObject.new;
 var mwp = pageObject.main;
 var swp = pageObject.selected;
 
-var utils = require('../utils/utils');
+var utils = require('../utils');
 var BaseService = require('./base.so');
 
 var _ = require('lodash');
@@ -14,7 +14,7 @@ function WorkerService() {
   BaseService.call(this, pageObject);
 }
 
-utils.inherit(WorkerService, BaseService);
+utils.object.inherit(WorkerService, BaseService);
 
 /**
  * Clear specific fields on Item Form
@@ -29,7 +29,7 @@ WorkerService.prototype.clearOtherFields = _.noop;
 WorkerService.prototype.searchForItem = function(worker, count) {
   return mwp.commands.search(worker.name)
   .then(() => mwp.commands.count())
-  .then((c) => utils.expectResultIsEquelTo(c, count));
+  .then((c) => utils.expect.resultIsEquelTo(c, count));
 };
 
 /**
@@ -38,14 +38,14 @@ WorkerService.prototype.searchForItem = function(worker, count) {
 WorkerService.prototype.expectFieldsPresent = function() {
   return nwp.locators.workerForm.self.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.workerForm.fields, x => x.isPresent());
+    utils.expect.resultIsTrue(result);
+    return utils.promise.all(nwp.locators.workerForm.fields, x => x.isPresent());
   })
   .then((results) => { // fields present
-    utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.workerForm.dropdowns, x => x.isPresent());
+    utils.expect.eachResultsIsTrue(results);
+    return utils.promise.all(nwp.locators.workerForm.dropdowns, x => x.isPresent());
   })
-  .then((results) => utils.expectEachResultsIsTrue(results)); // dropdowns present
+  .then((results) => utils.expect.eachResultsIsTrue(results)); // dropdowns present
 };
 
 /**
@@ -56,18 +56,18 @@ WorkerService.prototype.expectDetailsToBe = function(worker) {
   return swp.commands.getDetails()
   .then((details) => {
     var username = swp.commands.getUsername(details);
-    utils.expectResultIsEquelTo(username.h3, worker.username);
+    utils.expect.resultIsEquelTo(username.h3, worker.username);
     var phoneNumber = swp.commands.getPhoneNumber(details);
-    utils.expectResultIsEquelTo(phoneNumber.h3, worker.phonenumber);
+    utils.expect.resultIsEquelTo(phoneNumber.h3, worker.phonenumber);
     var email = swp.commands.getEmail(details);
-    utils.expectResultIsEquelTo(email.h3, worker.email);
+    utils.expect.resultIsEquelTo(email.h3, worker.email);
     var position = swp.commands.getPosition(details);
-    utils.expectResultIsEquelTo(position.h3, worker.position);
+    utils.expect.resultIsEquelTo(position.h3, worker.position);
     var group = swp.commands.getGroup(details);
-    utils.expectResultIsEquelTo(group.h3, worker.group);
+    utils.expect.resultIsEquelTo(group.h3, worker.group);
     // swp.commands.getNotes() // TODO add notes check
     // .then(function(notes) {
-    //   utils.expectResultIsEquelTo(notes, worker.notes);
+    //   utils.expect.resultIsEquelTo(notes, worker.notes);
     // });
   });
 };
@@ -75,10 +75,10 @@ WorkerService.prototype.expectDetailsToBe = function(worker) {
 WorkerService.prototype.expectElementInfo = function(worker) {
   return swp.locators.workerHeader.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
     return swp.locators.workerHeader.getText();
   })
-  .then((result) => utils.expectResultIsEquelTo(result, 'Worker : ' + worker.name));
+  .then((result) => utils.expect.resultIsEquelTo(result, 'Worker : ' + worker.name));
 };
 
 WorkerService.prototype.expectElementDetails = function(promise, expected, expectFunc) {

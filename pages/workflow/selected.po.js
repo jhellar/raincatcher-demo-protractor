@@ -1,4 +1,4 @@
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var SelectedWorkflowPage = function() {
 
@@ -32,10 +32,10 @@ var SelectedWorkflowPage = function() {
   var commands = {
     selfCheck: function(header) {
       return locators.workflowHeader.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workflowHeader.getText();
       }).then(function(result) {
-        utils.expectResultIsNotEquelTo(result, header);
+        utils.expect.resultIsNotEquelTo(result, header);
       });
     },
     getStepsDetails: function() {

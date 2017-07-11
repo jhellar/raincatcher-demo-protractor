@@ -1,4 +1,4 @@
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var SelectedWorkerPage = function() {
 
@@ -13,15 +13,15 @@ var SelectedWorkerPage = function() {
   var commands = {
     selfCheck: function(header) {
       return locators.workerHeader.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workerHeader.getText();
       }).then(function(result) {
-        utils.expectResultIsNotEquelTo(result, header);
+        utils.expect.resultIsNotEquelTo(result, header);
       });
     },
     openWorkordersPage: function() {
       return locators.workordersPage.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workordersPage.click();
       });
     },

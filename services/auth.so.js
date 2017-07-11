@@ -9,7 +9,7 @@ var mwp = require('../pages/worker/main.po');
 var WorkerService = require('./worker.so');
 var workerService = new WorkerService();
 
-var utils = require('../utils/utils');
+var utils = require('../utils');
 var _ = require('lodash');
 
 /**
@@ -28,8 +28,7 @@ function AuthService() {
  */
 AuthService.prototype.openPortal = function() {
   loginPage.commands.navigate();
-  var progress = 'md-progress-circular';
-  utils.waitNotPresent(progress);
+  utils.wait.untilNot(element(by.css('md-progress-circular')));
   loginPage.commands.selfCheck();
 };
 
@@ -54,7 +53,7 @@ AuthService.prototype.loginPortal = function(username, password) {
  * @return {*} checks that portal login was successful
  */
 AuthService.prototype.checkPortalLoginWasSuccessful = function() {
-  utils.waitUntilPresent(schedulerPage.locators.header, 5000);
+  utils.wait.until(schedulerPage.locators.header, 5000);
   schedulerPage.commands.selfCheck();
 };
 
@@ -87,7 +86,7 @@ AuthService.prototype.confirmPasswordMissingError = function() {
 AuthService.prototype.openPortalUserSettings = function(userFullName) {
   workerService.open({ name: userFullName });
   return mwp.locators.editButton.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
   });
 };
 
@@ -97,11 +96,11 @@ AuthService.prototype.openPortalUserSettings = function(userFullName) {
  */
 AuthService.prototype.openUserUpdateScreen = function() {
   return mwp.locators.editButton.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
     return mwp.locators.editButton.click().then(function(result) {
-      utils.expectResultIsNull(result);
+      utils.expect.resultIsNull(result);
       return cwp.locators.workerForm.buttons.update.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     });
   });
@@ -114,13 +113,17 @@ AuthService.prototype.openUserUpdateScreen = function() {
  */
 AuthService.prototype.changeUserPassword = function(newPassword) { // this method is broken
   return cwp.locators.workerForm.fields.password.sendKeys(newPassword).then(function(result) {
-    utils.expectResultIsNull(result);
-    return cwp.locators.workerForm.buttons.update.isPresent().then(function(result) {
-      utils.expectResultIsTrue(result);
-      return cwp.locators.workerForm.buttons.update.click().then(function(result) {
-        utils.expectResultIsNull(result);
-        return mwp.locators.editButton.isPresent().then(function(result) {
-          utils.expectResultIsTrue(result);
+    utils.expect.resultIsNull(result);
+    return cwp.locators.workerForm.fields.phonenumber.clear().sendKeys('777777777') // TODO this is a BUG
+    .then(function(result) {
+      utils.expect.resultIsNull(result);
+      return cwp.locators.workerForm.buttons.update.isPresent().then(function(result) {
+        utils.expect.resultIsTrue(result);
+        return cwp.locators.workerForm.buttons.update.click().then(function(result) {
+          utils.expect.resultIsNull(result);
+          return mwp.locators.editButton.isPresent().then(function(result) {
+            utils.expect.resultIsTrue(result);
+          });
         });
       });
     });
@@ -151,7 +154,7 @@ AuthService.prototype.checkClientLoginWasSuccessful = _.noop;
  */
 AuthService.prototype.navigateToPortalLogoutPage = function() {
   navigationTab.navigateTo.logoutPage();
-  utils.waitUntilPresent(logoutPage.locators.logoutButton);
+  utils.wait.until(logoutPage.locators.logoutButton);
   logoutPage.commands.selfCheck();
 };
 
@@ -168,7 +171,7 @@ AuthService.prototype.logoutOfPortal = function() {
  * @return {*} checks logout was successful
  */
 AuthService.prototype.checkPortalLogoutWasSuccessful = function() {
-  utils.waitUntilPresent(loginPage.locators.fields.usernameField);
+  utils.wait.until(loginPage.locators.fields.usernameField);
   loginPage.commands.selfCheck();
 };
 

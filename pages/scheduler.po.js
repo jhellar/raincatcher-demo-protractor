@@ -1,5 +1,5 @@
 var consts = require('../utils/constants');
-var utils = require('../utils/utils');
+var utils = require('../utils');
 
 var SchedulerPage = function() {
   /**
@@ -28,21 +28,21 @@ var SchedulerPage = function() {
    */
   var commands = {
     sideClick: function() {
-      utils.navigateToSection();
+      utils.ui.navigateToSection();
       return locators.sideMenuButton.click();
     },
     selfCheck: function() {
       return browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.schedule.URL);
+        utils.expect.resultIsEquelTo(result, consts.schedule.URL);
         return locators.header.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.toolbar.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.datePicker.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     openCalendarWithIcon: function() {

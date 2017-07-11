@@ -4,7 +4,7 @@ var ngp = pageObject.new;
 var mgp = pageObject.main;
 var sgp = pageObject.selected;
 
-var utils = require('../utils/utils');
+var utils = require('../utils');
 var BaseService = require('./base.so');
 
 var _ = require('lodash');
@@ -14,7 +14,7 @@ function GroupService() {
   BaseService.call(this, pageObject);
 }
 
-utils.inherit(GroupService, BaseService);
+utils.object.inherit(GroupService, BaseService);
 
 /**
  * Clear specific fields on Group Form
@@ -27,7 +27,7 @@ GroupService.prototype.clearOtherFields = _.noop;
 GroupService.prototype.searchForItem = function(group, count) {
   return mgp.commands.search(group.name)
     .then(() => mgp.commands.count())
-    .then((c) => utils.expectResultIsEquelTo(c, count));
+    .then((c) => utils.expect.resultIsEquelTo(c, count));
 };
 
 /**
@@ -36,14 +36,14 @@ GroupService.prototype.searchForItem = function(group, count) {
 GroupService.prototype.expectFieldsPresent = function() {
   ngp.locators.groupForm.self.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(ngp.locators.groupForm.fields, x => x.isPresent());
+    utils.expect.resultIsTrue(result);
+    return utils.promise.all(ngp.locators.groupForm.fields, x => x.isPresent());
   })
   .then((results) => { // fields present
-    utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(ngp.locators.groupForm.dropdowns, x => x.isPresent());
+    utils.expect.eachResultsIsTrue(results);
+    return utils.promise.all(ngp.locators.groupForm.dropdowns, x => x.isPresent());
   })
-  .then((results) => utils.expectEachResultsIsTrue(results)); // dropdowns present
+  .then((results) => utils.expect.eachResultsIsTrue(results)); // dropdowns present
 };
 
 /**
@@ -54,12 +54,12 @@ GroupService.prototype.expectDetailsToBe = function(group) {
   sgp.commands.getDetails()
   .then((details) => {
     var name = sgp.commands.getName(details);
-    utils.expectResultIsEquelTo(name.h3, group.name);
+    utils.expect.resultIsEquelTo(name.h3, group.name);
     var role = sgp.commands.getRole(details);
-    utils.expectResultIsEquelTo(role.h3, _.toLower(group.role));
+    utils.expect.resultIsEquelTo(role.h3, _.toLower(group.role));
     // sgp.commands.getMembers() // TODO implement members check
     // .then(function(members) {
-    //   utils.expectResultIsEquelTo(members, group.members);
+    //   utils.expect.resultIsEquelTo(members, group.members);
     // });
   });
 };
@@ -67,10 +67,10 @@ GroupService.prototype.expectDetailsToBe = function(group) {
 GroupService.prototype.expectElementInfo = function(group) {
   sgp.locators.groupHeader.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
     return sgp.locators.groupHeader.getText();
   })
-  .then((result) => utils.expectResultIsEquelTo(result, group.name + ' Group'));
+  .then((result) => utils.expect.resultIsEquelTo(result, group.name + ' Group'));
 };
 
 GroupService.prototype.expectElementDetails = function(promise, expected, expectFunc) {

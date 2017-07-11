@@ -1,4 +1,4 @@
-var utils = require('../utils/utils');
+var utils = require('../utils');
 var _ = require('lodash');
 
 function BaseService(pageObject) {
@@ -19,25 +19,25 @@ BaseService.prototype.create = function(item, dummyParams) {
   dummyParams = dummyParams || false;
 
   pageObject.main.commands.sideClick()
-  .then(() => utils.pressButton(pageObject.main.locators.newButton))
+  .then(() => utils.ui.clickButtonPromise(pageObject.main.locators.newButton))
   .then(() => pageObject.new.commands.selfCheck())
   .then(() => self.expectFieldsPresent())
   .then( ()  => {
     if (!dummyParams && pageObject.new.locators.itemForm.dropdowns) {
-      utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
+      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
     }
   })
   .then(() => {
     if (!dummyParams && pageObject.new.locators.itemForm.datetime) {
-      utils.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
+      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
     }
   })
   .then(() => {
     if (!dummyParams) { // fill dropdowns
-      utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
+      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
     }
   })
-  .then(() => utils.pressButton(pageObject.new.locators.itemForm.buttons.create))
+  .then(() => utils.ui.clickButtonPromise(pageObject.new.locators.itemForm.buttons.create))
   .then(() => {
     if (!dummyParams) {
       self.expectElementInfo(item);
@@ -55,15 +55,15 @@ BaseService.prototype.update = function(toUpdate, updatee) {
   var pageObject = this.pageObject;
 
   return self.open(toUpdate)
-  .then(() => utils.pressButton(pageObject.main.locators.editButton))
+  .then(() => utils.ui.clickButtonPromise(pageObject.main.locators.editButton))
   .then(() => self.clearAllFields())
   .then(() => {
     if (pageObject.new.locators.itemForm.dropdowns) { // fill dropdowns
-      utils.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
+      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
     }
   })
-  .then(() => utils.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee)) // fill fields
-  .then(() => utils.pressButton(pageObject.new.locators.itemForm.buttons.update));
+  .then(() => utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee)) // fill fields
+  .then(() => utils.ui.clickButtonPromise(pageObject.new.locators.itemForm.buttons.update));
 };
 
 /**
@@ -84,14 +84,14 @@ BaseService.prototype.remove = function(item) {
   this.open(item)
   .then(() => pageObject.main.locators.deleteButton.isPresent())
   .then((result) => {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
     return pageObject.main.locators.deleteButton.click();
   })
   .then(() => pageObject.main.locators.proceedButton.isPresent())
-  .then((result) => utils.expectResultIsTrue(result))
+  .then((result) => utils.expect.resultIsTrue(result))
   .then(() => pageObject.main.locators.proceedButton.click())
   .then(() => pageObject.main.locators.proceedButton.isPresent())
-  .then((result) => utils.expectResultIsFalse(result));
+  .then((result) => utils.expect.resultIsFalse(result));
 };
 
 //################################################################################
@@ -130,10 +130,10 @@ BaseService.prototype.clearAllFields = function() {
   var pageObject = this.pageObject;
   pageObject.new.locators.itemForm.self.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(pageObject.new.locators.itemForm.fields, x => x.clear());
+    utils.expect.resultIsTrue(result);
+    return utils.promise.all(pageObject.new.locators.itemForm.fields, x => x.clear());
   })
-  .then((results) => utils.expectEachResultsIsNull(results)) // clear fields
+  .then((results) => utils.expect.eachResultsIsNull(results)) // clear fields
   .then(() => self.clearOtherFields()); // clear date and time
 };
 
@@ -147,10 +147,10 @@ BaseService.prototype.expectWarningsPresent = function() {
   var pageObject = this.pageObject;
   pageObject.new.locators.itemForm.self.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(pageObject.new.locators.itemForm.warnings, x => x.isPresent());
+    utils.expect.resultIsTrue(result);
+    return utils.promise.all(pageObject.new.locators.itemForm.warnings, x => x.isPresent());
   })
-  .then((results) => utils.expectEachResultsIsTrue(results));  
+  .then((results) => utils.expect.eachResultsIsTrue(results));
 };
 
 /**
@@ -159,7 +159,7 @@ BaseService.prototype.expectWarningsPresent = function() {
  * @param {*} expected item details to match
  */
 BaseService.prototype.expectElementDetailsEqualTo = function(promise, expected) {
-  return this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expect.resultIsEquelTo);
 };
 
 /**
@@ -168,7 +168,7 @@ BaseService.prototype.expectElementDetailsEqualTo = function(promise, expected) 
  * @param {*} expected item details to match
  */
 BaseService.prototype.expectElementDetailsNotEqualTo = function(promise, expected) {
-  return this.expectElementDetails(promise, expected, utils.expectResultIsNotEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expect.resultIsNotEquelTo);
 };
 
 /**
@@ -177,7 +177,7 @@ BaseService.prototype.expectElementDetailsNotEqualTo = function(promise, expecte
  */
 BaseService.prototype.expectToBeInList = function(expected) {
   var promise = this.search(expected, 1);
-  return this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
+  return this.expectElementDetails(promise, expected, utils.expect.resultIsEquelTo);
 };
 
 /**
@@ -187,7 +187,7 @@ BaseService.prototype.expectToBeInList = function(expected) {
 BaseService.prototype.expectNotInTheList = function(expected) {
   return this.search(expected, 0)
     .then((found) => found.isPresent())
-    .then((present) => utils.expectResultIsFalse(present));
+    .then((present) => utils.expect.resultIsFalse(present));
 };
 
 //################################################################################
@@ -195,17 +195,17 @@ BaseService.prototype.expectNotInTheList = function(expected) {
 //################################################################################
 /**
  * Press delete button
- * TODO delete button is still present when pressed
+ * TODO delete button is still present when Pressed
  */
 BaseService.prototype.pressDeleteButton = function() {
   var pageObject = this.pageObject;
   return pageObject.main.locators.deleteButton.isPresent()
   .then((result) => {
-    utils.expectResultIsTrue(result);
+    utils.expect.resultIsTrue(result);
     pageObject.main.locators.deleteButton.click();
   })
   .then(() => pageObject.main.locators.deleteButton.isPresent());
-  // .then((result) => utils.expectResultIsFalse(result));
+  // .then((result) => utils.expect.resultIsFalse(result));
 };
 
 /**
@@ -213,7 +213,7 @@ BaseService.prototype.pressDeleteButton = function() {
  */
 BaseService.prototype.pressCancelButton = function() {
   var pageObject = this.pageObject;
-  return utils.pressButton(pageObject.main.locators.cancelButton);
+  return utils.ui.clickButtonPromise(pageObject.main.locators.cancelButton);
 };
 
 /**
@@ -221,7 +221,7 @@ BaseService.prototype.pressCancelButton = function() {
  */
 BaseService.prototype.pressNewButton = function() {
   var pageObject = this.pageObject;
-  return utils.pressButton(pageObject.main.locators.newButton);
+  return utils.ui.clickButtonPromise(pageObject.main.locators.newButton);
 };
 
 /**
@@ -229,15 +229,15 @@ BaseService.prototype.pressNewButton = function() {
  */
 BaseService.prototype.pressNewCancelButton = function() {
   var pageObject = this.pageObject;
-  return utils.pressButton(pageObject.new.locators.itemForm.buttons.cancel);
+  return utils.ui.clickButtonPromise(pageObject.new.locators.itemForm.buttons.cancel);
 };
 
 /**
- * Prese edit button
+ * Press edit button
  */
 BaseService.prototype.pressEditButton = function() {
   var pageObject = this.pageObject;
-  return utils.pressButton(pageObject.main.locators.editButton);
+  return utils.ui.clickButtonPromise(pageObject.main.locators.editButton);
 };
 
 /**
@@ -246,7 +246,7 @@ BaseService.prototype.pressEditButton = function() {
 BaseService.prototype.expectNewButtonIsPresent = function() {
   var pageObject = this.pageObject;
   return pageObject.main.locators.newButton.isPresent()
-    .then((result) => utils.expectResultIsTrue(result));
+    .then((result) => utils.expect.resultIsTrue(result));
 };
 
 //################################################################################

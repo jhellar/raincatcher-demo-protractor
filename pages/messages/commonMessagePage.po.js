@@ -1,8 +1,4 @@
-// var chai = require('chai');
-// var chaiAsPromised = require('chai-as-promised');
-// chai.use(chaiAsPromised);
-// var expect = chai.expect;
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var CommonMessagePage = function() {
   var locators = {
@@ -13,13 +9,13 @@ var CommonMessagePage = function() {
 
   var commands = {
     checkVisibility: function() {
-      utils.waitUntilPresent(locators.searchBox);
-      utils.checkElementsArePresent(locators.messageList);
+      utils.wait.until(locators.searchBox);
+      utils.check.elementsArePresent(locators.messageList);
     },
     // item can be sender or subject
     searchMessage: function(searchItem, numExpectedMessages) {
       locators.searchBox.sendKeys(searchItem);
-      utils.checkListSize(locators.messageListItems, numExpectedMessages);
+      utils.check.listSize(locators.messageListItems, numExpectedMessages);
     },
     getMessage: function(index) {
       locators.messageListItems.get(index).click();

@@ -1,5 +1,5 @@
 var schedulerCrudl = require('../services/scheduler.so');
-var dateUtil = require('../utils/date.utils');
+var dateUtil = require('../utils/date');
 var data = require('../data/scheduler.do');
 var constants = require('../utils/constants');
 var AuthService = require('../services/auth.so');

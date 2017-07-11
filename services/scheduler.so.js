@@ -1,7 +1,7 @@
 var schedulerPage = require('../pages/scheduler.po');
 var navigationTab = require('../pages/navigation.po');
-var utils = require('../utils/utils');
-var dateUtil = require('../utils/date.utils');
+var utils = require('../utils');
+var dateUtil = require('../utils/date');
 var constants = require('../utils/constants');
 var AuthService = require('./auth.so');
 var authService = new AuthService();
@@ -12,8 +12,8 @@ var authService = new AuthService();
  */
 module.exports.openScheduler = function() {
   navigationTab.navigateTo.schedulerPage();
-  utils.waitUntilPresent(schedulerPage.locators.toolbar);
-  utils.checkElementsArePresent([ schedulerPage.locators.header,
+  utils.wait.until(schedulerPage.locators.toolbar);
+  utils.check.elementsArePresent([ schedulerPage.locators.header,
     schedulerPage.locators.datePicker,
     schedulerPage.locators.openCalendarIconButton,
     schedulerPage.locators.openCalendarTriangleButton,
@@ -27,8 +27,8 @@ module.exports.openScheduler = function() {
  * @param date - date object that is expected the datepicker to display
  */
 module.exports.readDatePicker = function(date, dateFormat) {
-  utils.waitUntilPresent(schedulerPage.locators.datePicker);
-  utils.checkElementVisibilityAndAttributeValue(schedulerPage.locators.datePicker,
+  utils.wait.until(schedulerPage.locators.datePicker);
+  utils.check.elementVisibilityAndAttributeValue(schedulerPage.locators.datePicker,
     "value", dateUtil.getDateInFormat(date, dateFormat));
 };
 
@@ -50,7 +50,7 @@ module.exports.openCalendar = function(constantValue) {
     throw Error("Error: illegal value entered. Use values from" +
       " schedulerCalendarButton in /utils/constants.js");
   }
-  utils.waitUntilPresent(schedulerPage.locators.calendarPane);
+  utils.wait.until(schedulerPage.locators.calendarPane);
 };
 
 /**
@@ -61,7 +61,7 @@ module.exports.openCalendar = function(constantValue) {
 module.exports.selectNewDateInCalendar = function(newDateObject) {
   var newDayMonthDateYear = dateUtil.getDayMonthDateYear(newDateObject);
   var locator = schedulerPage.commands.createNewDateLocator(newDayMonthDateYear);
-  utils.waitUntilPresent(locator);
+  utils.wait.until(locator);
   locator.click();
 };
 
@@ -77,9 +77,9 @@ module.exports.checkCalendar = function(currentDateDateObject, selectedDayDateOb
     schedulerPage.locators.calendarSelectedDate ];
   var expectedValues = [ dateUtil.getDayDate(currentDateDateObject),
     dateUtil.getDayDate(selectedDayDateObject) ];
-  utils.waitUntilPresent(currentAndSelectedDays[0]);
-  utils.checkElementsArePresent(currentAndSelectedDays);
-  utils.checkValuesAreCorrect(currentAndSelectedDays, expectedValues);
+  utils.wait.until(currentAndSelectedDays[0]);
+  utils.check.elementsArePresent(currentAndSelectedDays);
+  utils.check.valuesAreCorrect(currentAndSelectedDays, expectedValues);
   schedulerPage.commands.chooseCalendarPaneDate(schedulerPage.locators.calendarSelectedDate);
 };
 
@@ -90,10 +90,10 @@ module.exports.checkCalendar = function(currentDateDateObject, selectedDayDateOb
  * @param expectedListSize - The expected number of elements in the workorders list
  */
 module.exports.checkWorkordersList = function(expectedListSize) {
-  utils.waitUntilPresent(schedulerPage.locators.workOrdersList);
-  utils.checkElementVisibilityAndValue(schedulerPage.locators.workOrderListHeading,
+  utils.wait.until(schedulerPage.locators.workOrdersList);
+  utils.check.elementVisibilityAndValue(schedulerPage.locators.workOrderListHeading,
     schedulerPage.locators.workOrdersListHeadingValue);
-  utils.checkListSize(schedulerPage.locators.workOrdersListItems, expectedListSize);
+  utils.check.listSize(schedulerPage.locators.workOrdersListItems, expectedListSize);
 };
 
 /**
@@ -103,7 +103,7 @@ module.exports.checkWorkordersList = function(expectedListSize) {
  * @param expectedValue - The expected title of the workorder
  */
 module.exports.readWorkOrderListItem = function(index, expectedValue) {
-  utils.waitUntilPresent(schedulerPage.locators.workOrdersList);
+  utils.wait.until(schedulerPage.locators.workOrdersList);
   utils.getAndCheckListItemTextValue(schedulerPage.locators.workOrdersListItems,
     index, expectedValue);
 };
@@ -130,7 +130,7 @@ module.exports.dragWorkorderToSchedule = function(workorderItemLocatorIndex, wor
  */
 module.exports.dragWorkorderToWorkorderList = function(workorderId) {
   var workorderLocator = schedulerPage.commands.createWorkorderLocator(workorderId);
-  utils.waitUntilPresent(workorderLocator);
+  utils.wait.until(workorderLocator);
   utils.dragAndDrop(workorderLocator, schedulerPage.locators.workOrdersList);
 };
 

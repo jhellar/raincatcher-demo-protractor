@@ -1,8 +1,4 @@
-// var chai = require('chai');
-// var chaiAsPromised = require('chai-as-promised');
-// chai.use(chaiAsPromised);
-// var expect = chai.expect;
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var NewMessagePage = function() {
   var locators = {
@@ -23,24 +19,24 @@ var NewMessagePage = function() {
 
   var commands = {
     checkVisibility: function() {
-      utils.waitUntilPresent(locators.newMessageSendTo);
-      utils.checkElementsArePresent([ locators.newMessageSubject,
+      utils.wait.until(locators.newMessageSendTo);
+      utils.check.elementsArePresent([ locators.newMessageSubject,
         locators.newMessageContent,
         locators.sendMessageButton ]);
     },
     checkForReceiverError: function() {
-      utils.checkElementVisibilityAndValue(locators.toWarningAlert,
+      utils.check.elementVisibilityAndValue(locators.toWarningAlert,
         locators.defaultToAlert);
     },
     checkForSubjectError: function() {
-      utils.checkElementVisibilityAndValue(locators.subjectWarningAlert,
+      utils.check.elementVisibilityAndValue(locators.subjectWarningAlert,
         locators.defaultSubjectAlert);
     },
     checkForContentError: function(expectedCharCounter) {
-      utils.checkElementVisibilityAndValue(locators.charCounterError,
+      utils.check.elementVisibilityAndValue(locators.charCounterError,
         expectedCharCounter);
       if (expectedCharCounter === "0/350") {
-        utils.checkElementVisibilityAndValue(locators.contentWarningAlert,
+        utils.check.elementVisibilityAndValue(locators.contentWarningAlert,
           locators.defaultNoContentAlert);
       }
     },

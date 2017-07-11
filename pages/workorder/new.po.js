@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var NewWorkorderPage = function() {
   var workorderFormSelector = 'form[name="workorderForm"]';
@@ -50,10 +50,10 @@ var NewWorkorderPage = function() {
     },
     selfCheck: function() {
       browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workorders.URL_NEW);
+        utils.expect.resultIsEquelTo(result, consts.workorders.URL_NEW);
         return locators.workorderForm.self.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     // enter data into page fields
@@ -99,65 +99,65 @@ var NewWorkorderPage = function() {
     },
     checkWorkflowWarningMessage: function() {
       return locators.workorderForm.warnings.workflow.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.workflow.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.WORKFLOW_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.WORKFLOW_MISSING_MSG);
         });
       });
     },
     checkTitleWarningMessage: function() {
       return locators.workorderForm.warnings.title.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.title.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.TITLE_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.TITLE_MISSING_MSG);
         });
       });
     },
     checkAddressWarningMessage: function() {
       return locators.workorderForm.warnings.address.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.address.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.ADDRESS_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.ADDRESS_MISSING_MSG);
         });
       });
     },
     checkLatitudeWarningMessage: function() {
       return locators.workorderForm.warnings.latitude.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.latitude.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.LATITUDE_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.LATITUDE_MISSING_MSG);
         });
       });
     },
     checkLongitudeWarningMessage: function() {
       return locators.workorderForm.warnings.longitude.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.longitude.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.LONGITUDE_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.LONGITUDE_MISSING_MSG);
         });
       });
     },
     checkFinishDateWarningMessage: function() {
       return locators.workorderForm.warnings.finishDate.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.finishDate.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.FINISH_DATE_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.FINISH_DATE_MISSING_MSG);
         });
       });
     },
     checkFinishTimeWarningMessage: function() {
       return locators.workorderForm.warnings.finishTime.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.finishTime.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.FINISH_TIME_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.FINISH_TIME_MISSING_MSG);
         });
       });
     },
     checkSummaryWarningMessage: function() {
       return locators.workorderForm.warnings.summary.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workorderForm.warnings.summary.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workorders.SUMMARY_MISSING_MSG);
+          utils.expect.resultIsEquelTo(result, consts.workorders.SUMMARY_MISSING_MSG);
         });
       });
     }

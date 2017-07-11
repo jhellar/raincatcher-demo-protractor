@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var MainWorkorderPage = function() {
   var locators = {
@@ -29,27 +29,27 @@ var MainWorkorderPage = function() {
       return browser.get(consts.HASH + consts.workorders.URL);
     },
     sideClick: function() {
-      utils.navigateToSection();
+      utils.ui.navigateToSection();
       return locators.sideMenuButton.click();
     },
     selfCheck: function() {
       return browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workorders.URL);
+        utils.expect.resultIsEquelTo(result, consts.workorders.URL);
         return locators.header.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.emptyTitle.getText();
       }).then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workorders.DEFAULT_HEADING);
+        utils.expect.resultIsEquelTo(result, consts.workorders.DEFAULT_HEADING);
         return locators.emptyBody.getText();
       }).then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workorders.DEFAULT_BODY);
+        utils.expect.resultIsEquelTo(result, consts.workorders.DEFAULT_BODY);
         return locators.newButton.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.search.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     search: function(text) {

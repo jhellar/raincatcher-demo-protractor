@@ -13,7 +13,7 @@ var constants = require('../utils/constants');
 var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
-describe('Workorder E2E', function() {
+describe.skip('Workorder E2E', function() {
 
   before('LOGIN', function() {
     authService.openPortal();

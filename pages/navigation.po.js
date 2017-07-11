@@ -1,4 +1,4 @@
-var utils = require('../utils/utils');
+var utils = require('../utils');
 
 var NavigationTab = function() {
   var locators = {
@@ -9,37 +9,37 @@ var NavigationTab = function() {
 
   var navigateTo = {
     schedulerPage: function() {
-      utils.navigateToSection(locators.navListItems.get(0));
+      utils.ui.navigateToSection(locators.navListItems.get(0));
     },
     workordersPage: function() {
-      utils.navigateToSection(locators.navListItems.get(1));
+      utils.ui.navigateToSection(locators.navListItems.get(1));
     },
     workersPage: function() {
-      utils.navigateToSection(locators.navListItems.get(2));
+      utils.ui.navigateToSection(locators.navListItems.get(2));
     },
     groupsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(3));
+      utils.ui.navigateToSection(locators.navListItems.get(3));
     },
     mapPage: function() {
-      utils.navigateToSection(locators.navListItems.get(4));
+      utils.ui.navigateToSection(locators.navListItems.get(4));
     },
     messagesPage: function() {
-      utils.navigateToSection(locators.navListItems.get(5));
+      utils.ui.navigateToSection(locators.navListItems.get(5));
     },
     filesPage: function() {
-      utils.navigateToSection(locators.navListItems.get(6));
+      utils.ui.navigateToSection(locators.navListItems.get(6));
     },
     workflowsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(7));
+      utils.ui.navigateToSection(locators.navListItems.get(7));
     },
     formsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(8));
+      utils.ui.navigateToSection(locators.navListItems.get(8));
     },
     analyticsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(9));
+      utils.ui.navigateToSection(locators.navListItems.get(9));
     },
     logoutPage: function() {
-      utils.navigateToSection(locators.navListItems.last());
+      utils.ui.navigateToSection(locators.navListItems.last());
     }
   };
 

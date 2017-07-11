@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var CreateGroupPage = function() {
   var groupFormSelector = 'form[name="groupForm"]';
@@ -29,10 +29,10 @@ var CreateGroupPage = function() {
     },
     selfCheck: function() {
       browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.groups.URL_NEW);
+        utils.expect.resultIsEquelTo(result, consts.groups.URL_NEW);
         return locators.groupForm.self.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     enterName: function(name) {
@@ -43,9 +43,9 @@ var CreateGroupPage = function() {
     },
     checkFinishTimeWarningMessage: function() {
       return locators.groupForm.warnings.name.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.groupForm.warnings.name.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.groups.NAME_MISSING_MSG); // TODO name message is required
+          utils.expect.resultIsEquelTo(result, consts.groups.NAME_MISSING_MSG); // TODO name message is required
         });
       });
     }

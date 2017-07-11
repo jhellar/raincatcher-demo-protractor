@@ -1,5 +1,5 @@
 var consts = require('../../utils/constants');
-var utils = require('../../utils/utils');
+var utils = require('../../utils');
 
 var NewWorkflowPage = function() {
   var workflowFormSelector = 'form[name="workflowForm"]';
@@ -26,10 +26,10 @@ var NewWorkflowPage = function() {
     },
     selfCheck: function() {
       browser.getLocationAbsUrl().then(function(result) {
-        utils.expectResultIsEquelTo(result, consts.workflows.URL_NEW);
+        utils.expect.resultIsEquelTo(result, consts.workflows.URL_NEW);
         return locators.workflowForm.self.isPresent();
       }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
       });
     },
     enterTitle: function(title) {
@@ -40,9 +40,9 @@ var NewWorkflowPage = function() {
     },
     checkTitleWarningMessage: function() {
       return locators.workflowForm.warnings.title.isPresent().then(function(result) {
-        utils.expectResultIsTrue(result);
+        utils.expect.resultIsTrue(result);
         return locators.workflowForm.warnings.title.getText().then(function(result) {
-          utils.expectResultIsEquelTo(result, consts.workflows.TITLE_MISSING_MSG); // TODO title message is required
+          utils.expect.resultIsEquelTo(result, consts.workflows.TITLE_MISSING_MSG); // TODO title message is required
         });
       });
     }
