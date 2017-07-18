@@ -22,19 +22,19 @@ BaseService.prototype.create = function(item, dummyParams) {
   .then(() => utils.ui.clickButtonPromise(pageObject.main.locators.newButton))
   .then(() => pageObject.new.commands.selfCheck())
   .then(() => self.expectFieldsPresent())
-  .then( ()  => {
+  .then( ()  => { // fill dropdown selectors
     if (!dummyParams && pageObject.new.locators.itemForm.dropdowns) {
-      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
+      return utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, item);
     }
   })
-  .then(() => {
+  .then(() => { // fill date and time fields
     if (!dummyParams && pageObject.new.locators.itemForm.datetime) {
-      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
+      return utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.datetime, item);
     }
   })
   .then(() => {
-    if (!dummyParams) { // fill dropdowns
-      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
+    if (!dummyParams) { // fill input fields
+      return utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.fields, item);
     }
   })
   .then(() => utils.ui.clickButtonPromise(pageObject.new.locators.itemForm.buttons.create))
@@ -59,7 +59,12 @@ BaseService.prototype.update = function(toUpdate, updatee) {
   .then(() => self.clearAllFields())
   .then(() => {
     if (pageObject.new.locators.itemForm.dropdowns) { // fill dropdowns
-      utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
+      return utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.dropdowns, updatee);
+    }
+  })
+  .then(() => {
+    if (pageObject.new.locators.itemForm.datetime) { // fill date and time
+      return utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.datetime, updatee);
     }
   })
   .then(() => utils.ui.sendKeysPromise(pageObject.new.locators.itemForm.fields, updatee)) // fill fields

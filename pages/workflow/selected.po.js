@@ -7,6 +7,7 @@ var SelectedWorkflowPage = function() {
 
     workflowHeader: element(by.css('div.ng-scope.flex>md-toolbar>div>h3')),
     workflowSteps: element.all(by.repeater('step in ctrl.workflow.steps')), // get all steps but not [Add Step]
+    workflowEditLink: element(by.css('#content > div.ng-scope.flex > md-toolbar > div > a')),
 
     stepForm: {
       self: element(by.css(stepFormSelector)),
@@ -36,6 +37,11 @@ var SelectedWorkflowPage = function() {
         return locators.workflowHeader.getText();
       }).then(function(result) {
         utils.expect.resultIsNotEquelTo(result, header);
+      });
+    },
+    getWorkflowEditLink: function() {
+      return locators.workflowEditLink.getAttribute('href').then(function(value) {
+        return value;
       });
     },
     getStepsDetails: function() {

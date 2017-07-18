@@ -61,4 +61,4 @@ var NewMessagePage = function() {
   };
 };
 
-module.exports = new NewMessagePage();
+module.exports = NewMessagePage();

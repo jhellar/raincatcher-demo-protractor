@@ -37,4 +37,4 @@ var SelectedMessagesPage = function() {
   };
 };
 
-module.exports = new SelectedMessagesPage();
+module.exports = SelectedMessagesPage();

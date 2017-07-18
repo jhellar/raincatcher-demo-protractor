@@ -13,23 +13,27 @@ var constants = require('../utils/constants');
 var AuthService = require('../services/auth.so');
 var authService = new AuthService();
 
-describe.skip('Workorder E2E', function() {
-
+describe('Workorder E2E', function() {
   before('LOGIN', function() {
     authService.openPortal();
     authService.loginPortal(constants.auth.usernames.TREVER_SMITH,
       constants.auth.DEFAULT_PASSWORD);
     authService.checkPortalLoginWasSuccessful();
   });
-
   context('RUN TEST', function() {
+    var workflow1Id, workflow2Id;
     before('create workers', function() {
       workerService.create(data.workers.WORKER1);
       workerService.create(data.workers.WORKER2);
     });
     before('create workflows', function() {
       workflowService.create(data.workflows.WORKFLOW1);
+      workflowService.getWorkflowId(data.workflows.WORKFLOW1)
+        .then((wid) => workflow1Id = wid);
+
       workflowService.create(data.workflows.WORKFLOW2);
+      workflowService.getWorkflowId(data.workflows.WORKFLOW2)
+        .then((wid) => workflow2Id = wid);
     });
     context('CREATE', function() {
       it('create an empty{} workorder', function() {
@@ -39,7 +43,7 @@ describe.skip('Workorder E2E', function() {
         workorderService.expectWarningsPresent();
       });
       it('create ' + data.params.WORKORDER_TCREATE + ' workorder', function() {
-        workorderService.create(data.workorders.CREATE);
+        workorderService.create(workorderService.clone(data.workorders.CREATE, workflow1Id));
       });
       it('open ' + data.params.WORKORDER_TCREATE + ' workorder', function() { //RAINCATCH-641
         workorderService.open(data.workorders.CREATE); // open workorder to see details
@@ -49,9 +53,6 @@ describe.skip('Workorder E2E', function() {
       });
       it('check ' + data.params.WORKORDER_TCREATE + ' workorder in list', function() {
         workorderService.expectToBeInList(data.workorders.CREATE);
-      });
-      it('open ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
-        workerService.open(data.workers.WORKER1);
       });
       it('check ' + data.params.WORKORDER_TCREATE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
         workerService.verifyWorkorderInList(data.workers.WORKER1, data.workorders.CREATE);
@@ -66,10 +67,10 @@ describe.skip('Workorder E2E', function() {
 
     context('UPDATE', function() {
       before('create ' + data.params.WORKORDER_TUPDATE1 + ' workorder', function() {
-        workorderService.create(data.workorders.UPDATE1);
+        workorderService.create(workorderService.clone(data.workorders.UPDATE1, workflow1Id));
       });
       it('update ' + data.params.WORKORDER_TUPDATE1 + ' workorder details', function() {
-        workorderService.update(data.workorders.UPDATE1, data.workorders.UPDATE2);
+        workorderService.update(data.workorders.UPDATE1, workorderService.clone(data.workorders.UPDATE2, workflow2Id));
       });
       it('open ' + data.params.WORKORDER_TUPDATE2 + ' workorder', function() { //RAINCATCH-641
         workorderService.open(data.workorders.UPDATE2); // open workorder to see details
@@ -82,9 +83,6 @@ describe.skip('Workorder E2E', function() {
       });
       it('check ' + data.params.WORKORDER_TUPDATE1 + ' workorder not in list', function() {
         workorderService.expectNotInTheList(data.workorders.UPDATE1);
-      });
-      it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
-        workerService.open(data.workers.WORKER2);
       });
       it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in ' + data.params.WORKER_TCRUDL2 + ' worker list', function() {
         workerService.verifyWorkorderInList(data.workers.WORKER2, data.workorders.UPDATE2);
@@ -100,7 +98,7 @@ describe.skip('Workorder E2E', function() {
 
     context('CANCEL', function() {
       before('create ' + data.params.WORKORDER_TCANCEL + ' workorder', function() {
-        workorderService.create(data.workorders.CANCEL);
+        workorderService.create(workorderService.clone(data.workorders.CANCEL, workflow2Id));
       });
       it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
         workorderService.open(data.workorders.CANCEL);
@@ -143,7 +141,7 @@ describe.skip('Workorder E2E', function() {
     context('SEARCH', function() {
       var searched;
       before('create ' + data.params.WORKORDER_TSEARCH + ' workorder', function() {
-        workorderService.create(data.workorders.SEARCH);
+        workorderService.create(workorderService.clone(data.workorders.SEARCH, workflow1Id));
       });
       it('search field is visible and ' + data.params.WORKORDER_TSEARCH + 'is searched', function() {
         searched = workorderService.search(data.workorders.SEARCH, 1);
@@ -164,7 +162,7 @@ describe.skip('Workorder E2E', function() {
 
     context('DELETE', function() {
       before('create ' + data.params.WORKORDER_TDELETE + ' workorder', function() {
-        workorderService.create(data.workorders.DELETE);
+        workorderService.create(workorderService.clone(data.workorders.DELETE, workflow1Id));
       });
       it('remove ' + data.params.WORKORDER_TDELETE + ' workorder', function() {
         workorderService.remove(data.workorders.DELETE);

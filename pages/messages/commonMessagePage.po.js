@@ -27,4 +27,4 @@ var CommonMessagePage = function() {
   };
 };
 
-module.exports = new CommonMessagePage();
+module.exports = CommonMessagePage();

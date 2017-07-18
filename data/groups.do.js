@@ -1,11 +1,11 @@
 var params = {
-  GROUP_TCREATE: 'grp-crudl-create',
-  GROUP_TUPDATE1: 'grp-crudl-update-1',
-  GROUP_TUPDATE2: 'grp-crudl-update-2',
-  GROUP_TCANCEL: 'grp-crudl-cancel',
-  GROUP_TDELETE: 'grp-crudl-delete',
-  GROUP_TSEARCH: 'grp-crudl-search',
-  GROUP_TADD: 'grp-member-add-to',
+  GROUP_TCREATE: 'create-grp-crudl',
+  GROUP_TUPDATE1: 'update1-grp-crudl',
+  GROUP_TUPDATE2: 'update2-grp-crudl',
+  GROUP_TCANCEL: 'cancel-grp-crudl',
+  GROUP_TDELETE: 'delete-grp-crudl',
+  GROUP_TSEARCH: 'search-grp-crudl',
+  GROUP_TADD: 'addto-grp-member',
   WORKER_TADD: 'grp-member-in-group'
 };
 

@@ -1,14 +1,14 @@
 var params = {
-  WORKER_TCRUDL1: 'wrk-crudl-1',
-  WORKER_TCRUDL2: 'wrk-crudl-2',
-  WORKFLOW_TCRUDL1: 'wfw-crudl-1',
-  WORKFLOW_TCRUDL2: 'wfw-crudl-2',
-  WORKORDER_TCREATE: 'wor-crudl-create',
-  WORKORDER_TCANCEL: 'wor-crudl-cancel',
-  WORKORDER_TUPDATE1: 'wor-crudl-update-1',
-  WORKORDER_TUPDATE2: 'wor-crudl-update-2',
-  WORKORDER_TDELETE: 'wor-crudl-delete',
-  WORKORDER_TSEARCH: 'wor-crudl-search'
+  WORKER_TCRUDL1: 'wrk1-wor-crudl',
+  WORKER_TCRUDL2: 'wrk2-wor-crudl',
+  WORKFLOW_TCRUDL1: 'wfw1-wor-crudl',
+  WORKFLOW_TCRUDL2: 'wfw2-wor-crudl',
+  WORKORDER_TCREATE: 'create-wor-crudl',
+  WORKORDER_TCANCEL: 'cancel-wor-crudl',
+  WORKORDER_TUPDATE1: 'update1-wor-crudl',
+  WORKORDER_TUPDATE2: 'update2-wor-crudl',
+  WORKORDER_TDELETE: 'delete-wor-crudl',
+  WORKORDER_TSEARCH: 'search-wor-crudl'
 };
 var workorders = {
   CREATE: {

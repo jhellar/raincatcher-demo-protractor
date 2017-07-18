@@ -108,4 +108,10 @@ WorkorderService.prototype.expectElementDetails = function(promise, expected, ex
   });
 };
 
+WorkorderService.prototype.clone = function(workorder, workflowId) {
+  var cwor =_.clone(workorder); // + ' - ' +  workorder.workflow;
+  cwor.workflow = workflowId;
+  return cwor;
+};
+
 module.exports = WorkorderService;

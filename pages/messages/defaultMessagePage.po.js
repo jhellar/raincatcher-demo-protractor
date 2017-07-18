@@ -30,4 +30,4 @@ var DefaultMessagesPage = function() {
   };
 };
 
-module.exports = new DefaultMessagesPage();
+module.exports = DefaultMessagesPage();

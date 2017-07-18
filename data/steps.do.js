@@ -1,10 +1,10 @@
 var params = {
-  STEP_TCREATE: 'stp-crudl-create',
-  STEP_TUPDATE1: 'stp-crudl-update-1',
-  STEP_TUPDATE2: 'stp-crudl-update-2',
-  STEP_TDELETE: 'stp-crudl-delete',
-  STEP_TCANCEL: 'stp-crudl-cancel',
-  WORKFLOW_TCRUDL: 'stp-crudl-1'
+  STEP_TCREATE: 'create-stp-crudl',
+  STEP_TUPDATE1: 'update1-stp-crudl',
+  STEP_TUPDATE2: 'update2-stp-crudl',
+  STEP_TDELETE: 'delete-stp-crudl',
+  STEP_TCANCEL: 'cancel-stp-crudl',
+  WORKFLOW_TCRUDL: 'addto-wfw-steps'
 };
 
 var steps = {

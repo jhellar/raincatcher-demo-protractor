@@ -14,8 +14,8 @@ var NewWorkorderPage = function() {
         summary: element(by.css(workorderFormSelector + ' #inputSummary')),
       },
       dropdowns: {
-        workflow: element(by.css(workorderFormSelector + ' #workflow')),
         assignee: element(by.css(workorderFormSelector + ' #assignee')),
+        workflow: element(by.css(workorderFormSelector + ' #workflow'))
       },
       datetime: {
         // startDate: element(by.css(workorderFormSelector + ' #inputStartDate')), // TODO

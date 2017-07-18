@@ -1,10 +1,10 @@
 var params = {
-  WORKFLOW_TCREATE: 'wfw-crudl-create',
-  WORKFLOW_TUPDATE1: 'wfw-crudl-update-1',
-  WORKFLOW_TUPDATE2: 'wfw-crudl-update-2',
-  WORKFLOW_TCANCEL: 'wfw-crudl-cancel',
-  WORKFLOW_TDELETE: 'wfw-crudl-delete',
-  WORKFLOW_TSEARCH: 'wfw-crudl-search'
+  WORKFLOW_TCREATE: 'create-wfw-crudl',
+  WORKFLOW_TUPDATE1: 'update1-wfw-crudl',
+  WORKFLOW_TUPDATE2: 'update2-wfw-crudl',
+  WORKFLOW_TCANCEL: 'cancel-wfw-crudl',
+  WORKFLOW_TDELETE: 'delete-wfw-crudl',
+  WORKFLOW_TSEARCH: 'search-wfw-crudl'
 };
 
 var workflows = {

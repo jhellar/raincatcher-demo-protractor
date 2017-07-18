@@ -1,10 +1,10 @@
 var params = {
-  WORKER_TCREATE: 'wrk-crudl-create',
-  WORKER_TUPDATE1: 'wrk-crudl-update-1',
-  WORKER_TUPDATE2: 'wrk-crudl-update-2',
-  WORKER_TCANCEL: 'wrk-crudl-cancel',
-  WORKER_TDELETE: 'wrk-crudl-delete',
-  WORKER_TSEARCH: 'wrk-crudl-search',
+  WORKER_TCREATE: 'create-wrk-crudl',
+  WORKER_TUPDATE1: 'update1-wrk-crudl',
+  WORKER_TUPDATE2: 'update2-wrk-crudl',
+  WORKER_TCANCEL: 'cancel-wrk-crudl',
+  WORKER_TDELETE: 'delete-wrk-crudl',
+  WORKER_TSEARCH: 'search-wrk-crudl',
 };
 
 var workers = {

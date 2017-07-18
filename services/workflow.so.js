@@ -29,7 +29,28 @@ WorkflowService.prototype.searchForItem = function(workflow, count) {
   .then(() => mwp.commands.count())
   .then((c) => utils.expect.resultIsEquelTo(c, count));
 };
-
+/**
+ * Get Workflow Id from selected workflow page
+ * @param {*} workflow to get id
+ */
+WorkflowService.prototype.getWorkflowId = function(workflow) {
+  var wid;
+  var condition = function(locator, timeout) {
+    timeout = timeout || 10000;
+    return browser.wait(function() {
+      return locator.getAttribute('href').then(value => {
+        var id = _.split(value, '/')[7]; // TODO find workflow id more easier
+        wid = _.trim(id);
+        return _.size(wid) !== 0;
+      });
+    }, timeout);
+  };
+  return this.open(workflow)
+  .then(function() {
+    utils.wait.until(swp.locators.workflowEditLink, 5000, condition);
+  })
+  .then(() => wid);
+};
 /**
  * Check if all fields of Workflow Form are present
  */
